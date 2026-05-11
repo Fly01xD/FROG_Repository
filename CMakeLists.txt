@@ -11,6 +11,13 @@ qt_add_executable(THE_FROG
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    cfrog.h cfrog.cpp
+    cvehicle.h cvehicle.cpp
+    clane.h clane.cpp
+    ccar.h ccar.cpp
+    cmotor.h cmotor.cpp
+    ICVehicle.h
+    ccrossing.h ccrossing.cpp
 )
 
 target_link_libraries(THE_FROG
