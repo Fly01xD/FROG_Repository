@@ -18,7 +18,7 @@ public:
     void randomSpeed(double min, double max) override;
 
     bool move(double _time, int max) override;
-    void move(double _time);
+    void move(double _time) override;
 
     // gettery settery
     double getSpeed() override;

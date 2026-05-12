@@ -18,6 +18,9 @@ qt_add_executable(THE_FROG
     cmotor.h cmotor.cpp
     ICVehicle.h
     ccrossing.h ccrossing.cpp
+    croad.h croad.cpp
+    cisland.h cisland.cpp
+    cfrogcontainer.h cfrogcontainer.cpp
 )
 
 target_link_libraries(THE_FROG

@@ -1,21 +1,17 @@
 #ifndef CCROSSING_H
 #define CCROSSING_H
 
-#include "cfrog.h"
+#include "cfrogcontainer.h"
 #include "cvehicle.h"
 
-class CCrossing
+class CCrossing : public CFrogContainer
 {
-    CFrog* Frog;
     CVehicle* Vehicle;
 public:
     CCrossing();
     ~CCrossing();
 
     void checkFrogState();
-
-    CFrog* getFrog();
-    void setFrog(CFrog* _frog);
 
     void setVehicle(CVehicle* _v);
 };

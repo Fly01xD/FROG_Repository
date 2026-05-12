@@ -6,12 +6,12 @@ CCrossing::~CCrossing() {}
 
 void CCrossing::checkFrogState()
 {
-    if(Frog && Vehicle)
-        Frog->setState(dead);
+    if(getFrog() && Vehicle)
+    {
+        getFrog()->setHP(getFrog()->getHP()-1);
+        if(getFrog()->getHP()<0)
+            getFrog()->setState(dead);
+    }
 }
-
-CFrog *CCrossing::getFrog() {return Frog;}
-
-void CCrossing::setFrog(CFrog* _frog) {Frog = _frog;}
 
 void CCrossing::setVehicle(CVehicle* _v) {Vehicle = _v;}

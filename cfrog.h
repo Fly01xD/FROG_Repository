@@ -14,6 +14,7 @@ class CFrog
 
 public:
     CFrog(int _hp);
+    ~CFrog();
 
     // gettery settery
     int getPoints();

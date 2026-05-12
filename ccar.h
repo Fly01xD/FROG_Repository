@@ -7,6 +7,7 @@ class CCar : public CVehicle
 {
 public:
     CCar(vehDirection _direction);
+    ~CCar();
 };
 
 #endif // CCAR_H

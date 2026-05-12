@@ -8,14 +8,19 @@
 
 class CLane
 {
-    unsigned Index;
     std::vector<CVehicle*> Vehicles;
     int Distance;
-    CCrossing Crossing;
     vehDirection Direction;
 public:
-    CLane(unsigned _i, int _distance);
+    CLane(int _distance, vehDirection _dir);
     ~CLane ();
+
+    // nie wiem czy przejście powinno być publiczne
+    // (nie chce aby przejście było
+    // zagregowane, bo charakterystyka przejścia
+    // i też nie chcę kopiowania przez hardware
+    // niepotrzebnie zmiennej typu CCrossing przy użyciu gettera)
+    CCrossing Crossing;
 
     // metody do dodawania pojazdu
     void addVehicle(CCar* car);
@@ -25,10 +30,6 @@ public:
     // metoda do wywołania ruchu pojazdu i
     // sprawdzenie czy pojazd wjechal na przejscie
     void update(double _time);
-
-    // wskakiwanie na i z przejscia
-    void jumpIn(CFrog* _frog);
-    CFrog* jumpOut();
 
     // getterki setterki
     vehDirection getDirection();

@@ -1,11 +1,15 @@
 #include "clane.h"
 #include <random>
 
-CLane::CLane(unsigned int _i, int _distance)
-    : Index(_i), Distance(_distance)
+CLane::CLane(int _distance, vehDirection _dir)
+    : Distance(_distance), Direction(_dir)
 {}
 
-CLane::~CLane() {}
+CLane::~CLane()
+{
+    for(auto v : Vehicles)
+        delete v;
+}
 
 // metody o różnych argumentach do dodawania pojazdów do kontenera
 void CLane::addVehicle(CMotor* motor)
@@ -52,17 +56,7 @@ void CLane::update(double _time)
     }
 }
 
-// wskakiwanie na przejście
-void CLane::jumpIn(CFrog* _frog)
-{
-    Crossing.setFrog(_frog);
-}
-CFrog* CLane::jumpOut()
-{
-    Crossing.setFrog(nullptr);
-    return Crossing.getFrog();
-}
-
+// gettery settery
 vehDirection CLane::getDirection() {return Direction;}
 
 void CLane::setDirection(vehDirection _dir) {Direction = _dir;}

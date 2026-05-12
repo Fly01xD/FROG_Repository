@@ -3,6 +3,8 @@
 CFrog::CFrog(int _hp) : HP(_hp), Points(0), State(alive)
 {}
 
+CFrog::~CFrog() {}
+
 int CFrog::getPoints() {return Points;}
 
 void CFrog::setPoints(int _points) {Points = _points;}

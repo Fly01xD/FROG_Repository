@@ -18,6 +18,7 @@ public:
     virtual ~ICVehicle() = default;
 
     virtual bool move(double _time, int max) = 0;
+    virtual void move(double _time) = 0;
 
     virtual void randomSpeed(double min, double max) = 0;
 
