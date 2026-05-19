@@ -1,4 +1,6 @@
 #include "croad.h"
+#include "SGameData.h"
+#include "cwriter.h"
 
 CRoad::CRoad(gameDifficulty _diff) : Distance(100)
 {
@@ -45,6 +47,20 @@ void CRoad::updateGame(double _dt)
         gameEnd();
     }
 }
+
+void CRoad::gameEnd()
+{
+    //Pobiera dane z pasa pierwszego (na którym znajduje się żaba w której jest ilość punktów)
+    int zdobytePunkty = Lanes[0]->Crossing.getFrog()->getPoints();
+
+    //Zapisywanie danych z żaby do struktury
+    GameData data;
+    data.score = zdobytePunkty;
+
+    //Zapisywanie do pliku
+    CWriter writer(&data);
+}
+
 
 //  logika jest taka, że żaba może być tylko na wyspie
 //  lub pasie o indeksie 0 w tablicy

@@ -21,6 +21,9 @@ qt_add_executable(THE_FROG
     croad.h croad.cpp
     cisland.h cisland.cpp
     cfrogcontainer.h cfrogcontainer.cpp
+    SGameData.h
+    creader.h creader.cpp
+    cwriter.h cwriter.cpp
 )
 
 target_link_libraries(THE_FROG
