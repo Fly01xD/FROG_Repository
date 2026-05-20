@@ -36,7 +36,10 @@ void CRoad::updateGame(double _dt)
 {
     // ruch pojazdów
     for(auto l : Lanes)
+    {
         l->update(_dt);
+        l->despawnVehicle();
+    }
 
     // sprawdzam czy żaba żyje
     if(Islands[0]->getFrog()->getState() == frogState::dead

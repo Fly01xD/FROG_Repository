@@ -26,6 +26,7 @@ public:
     void addVehicle(CCar* car);
     void addVehicle(CMotor* motor);
     void spawnVehicle();
+    void despawnVehicle();
 
     // metoda do wywołania ruchu pojazdu i
     // sprawdzenie czy pojazd wjechal na przejscie
@@ -34,7 +35,6 @@ public:
     // getterki setterki
     vehDirection getDirection();
     void setDirection(vehDirection _dir);
-
 };
 
 #endif // CLANE_H

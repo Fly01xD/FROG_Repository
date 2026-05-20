@@ -37,6 +37,13 @@ void CLane::spawnVehicle()
     }
 }
 
+void CLane::despawnVehicle()
+{
+    // usuwapierwszy pozostaly pojazd, który jest za przejsciem
+    if(Vehicles[0]->getState() == vehState::harmless && Vehicles[0]->getPosition() == 200)
+    Vehicles.erase(Vehicles.begin());
+}
+
 // metoda do wywołania ruchu pojazdu i
 // sprawdzenie czy pojazd wjechal na przejscie
 void CLane::update(double _time)
