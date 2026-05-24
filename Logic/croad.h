@@ -11,6 +11,11 @@ enum gameDifficulty {
     hard
 };
 
+enum roadInfrastructure {
+    island,
+    lane
+};
+
 class CRoad
 {
     std::vector<CLane*> Lanes;
@@ -25,7 +30,11 @@ public:
     void updateGame(double dt);
     void gameEnd(); // to trzeba jeszcze napisać
 
-    void jump(unsigned &_njump);
+    roadInfrastructure jump(unsigned &_njump);
+
+    //gettery settery
+    std::vector<CLane*> getLanes();
+    std::vector<CIsland*> getIslands();
 };
 
 #endif // CROAD_H

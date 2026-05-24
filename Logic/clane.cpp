@@ -3,7 +3,8 @@
 
 CLane::CLane(int _distance, vehDirection _dir)
     : Distance(_distance), Direction(_dir)
-{}
+{}  // nie napisałem jeszcze spawnowania
+    // pojazdu na psaie ruchu
 
 CLane::~CLane()
 {
@@ -55,13 +56,15 @@ void CLane::update(double _time)
         {
             if(v->move(_time, Distance))
             {
-                Crossing.setVehicle(v);
-                Crossing.checkFrogState();
+                Crossing->setVehicle(v);
+                Crossing->checkFrogState();
                 v->setState(harmless);  // jesli pojazd nie potrącił żaby ustawiamy harmless (bo juz przejechal przez przejscie)
             }
         }
     }
 }
+
+std::vector<CVehicle *> CLane::getVehicles() {return Vehicles;}
 
 // gettery settery
 vehDirection CLane::getDirection() {return Direction;}

@@ -5,25 +5,37 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
 
 qt_standard_project_setup()
 
+# ---------------------------------------------------------
+# 1. AUTOMATYCZNE WYSZUKIWANIE PLIKÓW (GLOB_RECURSE)
+# CMake przeszuka foldery Logic i Ui w poszukiwaniu plików.
+# Znak * oznacza "dowolny plik z danym rozszerzeniem".
+# ---------------------------------------------------------
+file(GLOB_RECURSE SOURCES "Logic/*.cpp" "Ui/*.cpp")
+file(GLOB_RECURSE HEADERS "Logic/*.h" "Ui/*.h")
+file(GLOB_RECURSE FORMS "Ui/*.ui")
+
+# ---------------------------------------------------------
+# 2. DEFINICJA PLIKU WYKONYWALNEGO
+# main.cpp zostawiamy "luzem" w głównym folderze.
+# Resztę ładujemy z naszych zmiennych.
+# ---------------------------------------------------------
 qt_add_executable(THE_FROG
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    cfrog.h cfrog.cpp
-    cvehicle.h cvehicle.cpp
-    clane.h clane.cpp
-    ccar.h ccar.cpp
-    cmotor.h cmotor.cpp
-    ICVehicle.h
-    ccrossing.h ccrossing.cpp
-    croad.h croad.cpp
-    cisland.h cisland.cpp
-    cfrogcontainer.h cfrogcontainer.cpp
-    SGameData.h
-    creader.h creader.cpp
-    cwriter.h cwriter.cpp
+    ${SOURCES}
+    ${HEADERS}
+    ${FORMS}
+)
+
+# ---------------------------------------------------------
+# 3. ŚCIEŻKI DO PLIKÓW NAGŁÓWKOWYCH (INCLUDE)
+# To ułatwia sprawę! Dzięki temu nie musisz pisać w kodzie:
+# #include "Logic/cfrog.h". Wystarczy stare #include "cfrog.h",
+# a kompilator i tak znajdzie ten plik w odpowiednim folderze.
+# ---------------------------------------------------------
+target_include_directories(THE_FROG PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/Logic
+    ${CMAKE_CURRENT_SOURCE_DIR}/Ui
 )
 
 target_link_libraries(THE_FROG

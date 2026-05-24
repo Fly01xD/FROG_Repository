@@ -20,7 +20,7 @@ public:
     // zagregowane, bo charakterystyka przejścia
     // i też nie chcę kopiowania przez hardware
     // niepotrzebnie zmiennej typu CCrossing przy użyciu gettera)
-    CCrossing Crossing;
+    CCrossing* Crossing;
 
     // metody do dodawania pojazdu
     void addVehicle(CCar* car);
@@ -33,6 +33,7 @@ public:
     void update(double _time);
 
     // getterki setterki
+    std::vector<CVehicle*> getVehicles();
     vehDirection getDirection();
     void setDirection(vehDirection _dir);
 };
