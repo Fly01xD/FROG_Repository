@@ -11,6 +11,7 @@
 
 class GameScene : public QGraphicsScene
 {
+protected:
     // logika sceny
     CRoad* logicRoad;
     // zmienna do skakania (nie wiem jak inaczej to zrobić)
@@ -29,7 +30,6 @@ public:
     // synchronizacja logiki z ui
     void synchLogic();
     // skakanie żaby
-    void keyPressEvent(QKeyEvent* event) override;
 };
 
 #endif // GAMESCENE_H

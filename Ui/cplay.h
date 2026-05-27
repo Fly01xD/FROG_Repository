@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGraphicsView>
 #include "gamescene.h"
+#include "gameview.h"
 class MainWindow;
 
 class CPlay : public QWidget {
@@ -12,13 +13,13 @@ public:
     CPlay(MainWindow &window, QWidget *parent = nullptr);
     ~CPlay();
     //metoda odpowiedzialna za stworzenie graficzne
-    void setupGameView();
+    void setupGameView(GameScene* _scene);
 
     //metoda
     void Play();
 private:
     MainWindow &m_window;
-    QGraphicsView *gameView;
+    GameView *gView;
     GameScene *sGame;
 };
 
