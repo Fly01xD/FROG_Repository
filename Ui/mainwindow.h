@@ -3,64 +3,41 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QLabel>
-#include "croad.h"
-#include "gamescene.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
+#include "croad.h"
+
+//deklarujemy klasy, żeby program wiedział, że istnieją nie możemy zastąpić
+//ich include ponieważ doprowadziłoby to do nieskończonej pętli
+class CMenu;
+class CLeaderboard;
+class CSettings;
+class CPlay;
+class CAI;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow() override;
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+
+    //gettery zwracające adres konkretnej sceny
+    QStackedWidget* getStackedWidget() {return stackedWidget; }
+    CMenu* getMenu()                   {return menuScreen; }
+    CLeaderboard* getLeaderboard()     {return leaderboardScreen; }
+    CSettings* getSettings()           {return settingsScreen; }
+    CPlay* getPlay()                   {return playScreen; }
+    CAI* getAI()                       {return AIScreen; }
+    gameDifficulty& getDifficulty()    {return currentDiff; }
 
 private:
-    Ui::MainWindow *ui;
-
-    //Funckje służące do reagowania na naciśnięcie przyciskóW
-    void Play();
-    void showLeaderboard();
-    void showSettings();
-    void startAI();
-    void toggleDifficulty();
-    void goMenu();
-
-    //Tutaj wypisane są jakie będą sceny (trzeba jeszcze dopisać tą główną)
-    QWidget *menuScene;
-    QWidget *leaderboardScene;
-    QWidget *settingsScene;
-
-    //To będzie nam pozwalało przechodzić między oknami
     QStackedWidget *stackedWidget;
+    gameDifficulty currentDiff = easy;
 
-    //"Kamera" żeby nasza gra była 2D i się poruszała
-    QGraphicsView *gameView;
-    //plansza do grania
-    GameScene *sGame;
-
-    //Dzięki temu ustawienia będą wiedziały jaki jest poziom trudności
-    //Początkowo poziom trudności to easy
-    gameDifficulty currentDifficulty = easy;
-
-    //Przycisk od zmiany trudności (po kliknięci się zmienia)
-    QPushButton *diffBtn;
-
-    //sczytywanie wyników do sceny Leaderboard z CReadera
-    QLabel *scoreLabels[3];
-
-    //Funkcje tworzące sceny:
-    void setupMenu();
-    void setupLeaderboard();
-    void setupSettings();
-    void setupGameView();
+    CMenu *menuScreen;
+    CLeaderboard *leaderboardScreen;
+    CSettings *settingsScreen;
+    CPlay *playScreen;
+    CAI* AIScreen;
 };
 #endif // MAINWINDOW_H
