@@ -5,6 +5,8 @@ class CRoad;
 
 class CPlayerBase
 {
+//musi być protected ponieważ CPlayerAi potrzebuje dostępu do unsigned n
+protected:
     CRoad* logicRoad;
     unsigned n; // n jest zmienną do liczenia przestrzeni
     // na których żaba była, robi to dla AI i CRoad za oczy żeby

@@ -2,14 +2,17 @@
 #define CGAME_H
 
 #include "mainwindow.h"
+#include "cobserver.h"
+
 class CRoad;
 class CPlayerBase;
+class CPlay;
 
 class CGame
 {
 
 public:
-    CGame(MainWindow* _window);
+    CGame(MainWindow* _window, CPlay* _playScreen);
     ~CGame();
 
     // setter dla CPlay
@@ -17,11 +20,16 @@ public:
     // odpala timery i daje hp dla żaby;
     CPlayerBase* beginGameAI(); // jeszcze trzeba napisać
     CPlayerBase* beginGame();
+
+    //impuls przekazywany z CBasePlayer do CRoad
+    //unsigned sprawia, że n musi być liczbą dodatnią
+    void executeJump(unsigned n);
 private:
     MainWindow* mWindow;
     CRoad logicRoad;
-    CPlayerBase* player; // tutaj musi być wskaźnik
-    // jeszcze należy wpisać obserwatora
+    CPlayerBase* player;   // tutaj musi być wskaźnik
+    CObserver* observer;
+    CPlay* playScreen;
 };
 
 #endif // CGAME_H
