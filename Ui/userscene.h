@@ -3,7 +3,7 @@
 
 #include "gamescene.h"
 
-class UserScene : protected GameScene
+class UserScene : public GameScene
 {
 public:
     UserScene(gameDifficulty _diff);

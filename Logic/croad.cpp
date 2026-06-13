@@ -6,16 +6,12 @@ CRoad::CRoad(gameDifficulty _diff) : Distance(100)
 {
     // ustawianie liczby HP dla poziomów trudnośći
     // (poziom trudności i początkowa liczba HP jest tożsama)
-    if(_diff == gameDifficulty::easy)
-        Difficulty = 3;
-    else if(_diff == gameDifficulty::medium)
-        Difficulty = 2;
-    else if(_diff == gameDifficulty::hard)
-        Difficulty = 1;
+    Difficulty = _diff+1;
 
     // tworzenie żaby na wyspie
     CIsland* island = new CIsland;
     island->addFrog(Difficulty);
+    frog = island->getFrog();
     Islands.push_back(island);
 
     // tworzenie pasóW
@@ -34,7 +30,7 @@ CRoad::~CRoad()
         delete i;
 }
 
-void CRoad::updateGame(double _dt)
+frogState CRoad::updateGame(double _dt)
 {
     // ruch pojazdów
     for(auto l : Lanes)
@@ -48,7 +44,10 @@ void CRoad::updateGame(double _dt)
     || Lanes[0]->Crossing->getFrog()->getState() == frogState::dead)
     {
         gameEnd();
+        return dead;
     }
+    else
+        return alive;
 }
 
 void CRoad::gameEnd()

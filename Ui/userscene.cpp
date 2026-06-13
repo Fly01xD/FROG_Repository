@@ -5,6 +5,9 @@ UserScene::UserScene(gameDifficulty _diff)
     : GameScene(_diff)
 {}
 
+UserScene::~UserScene()
+{}
+
 // metoda skakania pod przyciskiem
 void UserScene::keyPressEvent(QKeyEvent *event)
 {
@@ -12,69 +15,68 @@ void UserScene::keyPressEvent(QKeyEvent *event)
     {
         // najpierw logiczny skok żaby
         // i sprawdzenie z jakiego obiektu skoczyła
-        roadInfrastructure newInf = logicRoad->jump(njump);
-
+        roadInfrastructure newInf = getLogicRoad()->jump(getNjump());
         // jeśli skoczyła z pasa rucu, to trzeba dodać kolejny pas ruchu
         // i usunąć ten, z którego skoczyła
         if(newInf == roadInfrastructure::lane)
         {
             // usuwanie dzieci pasa ruchu (pojazdóW i przejścia)
-            for(auto c : laneItems[0]->childItems())
+            for(auto c : getLaneItems()[0]->childItems())
             {
                 if(dynamic_cast<VehicleItem*>(c))
                 {
                     // algorytm na usunięcie z vector konkretnej wartośći
-                    vehicleItems.erase(
-                        remove(vehicleItems.begin(), vehicleItems.end(), c)
-                        ,vehicleItems.end());
+                    auto& vehicles = getVehicleItems();
+                    vehicles.erase(
+                        remove(vehicles.begin(), vehicles.end(), c)
+                        ,vehicles.end());
                 }
                 else if(dynamic_cast<CrossingItem*>(c))
                 {
-                    crossingItems.erase(
-                        remove(crossingItems.begin(), crossingItems.end(), c)
-                        ,crossingItems.end());
+                    auto& crossings = getCrossingItems();
+                    crossings.erase(
+                        remove(crossings.begin(), crossings.end(), c)
+                        ,crossings.end());
                 }
                 removeItem(c);
                 delete c;
             }
-            removeItem(laneItems[0]);
-            delete laneItems[0];
-            laneItems.erase(laneItems.begin());
+            removeItem(getLaneItems()[0]);
+            delete getLaneItems()[0];
+            getLaneItems().erase(getLaneItems().begin());
 
-
-            // dodanie nowego pasa ruchu i jego dzieci (pojazdóW i przejścia)
-            LaneItem* laneI = new LaneItem(logicRoad->getLanes().back());
+            // dodanie nowego pasu ruchu i jego dzieci (pojazdóW i przejścia)
+            LaneItem* laneI = new LaneItem(getLogicRoad()->getLanes().back());
             addItem(laneI);
-            // trzeba jeszcze napisać rozmieszczenie nowego pasa
-            laneItems.push_back(laneI);
+            // trzeba jeszcze napisać rozmieszczenie nowego pasu
+            getLaneItems().push_back(laneI);
 
             // dodawanie przejścia i pojazdóW
-            CrossingItem* crosI =new CrossingItem(laneI, logicRoad->getLanes().back()->Crossing);
+            CrossingItem* crosI = new CrossingItem(laneI, getLogicRoad()->getLanes().back()->Crossing);
             addItem(crosI);
             // jeszcze trzeba napisać rozmieszczenie przejścia
-            crossingItems.push_back(crosI);
+            getCrossingItems().push_back(crosI);
+
             for(auto v : laneI->getLogicLane()->getVehicles())
             {
                 VehicleItem* vehI = new VehicleItem(laneI, v);
                 addItem(vehI);
-                vehicleItems.push_back(vehI);
+                getVehicleItems().push_back(vehI);
                 // jeszcze trzeba napisać rozmieszczenie pojazdów
             }
-
             // !!!trzeba napisać wizualizację żaby na przejściu!!!
         }
         else if(newInf == roadInfrastructure::island)
         {
             // usuwanie wyspy, z której żaba skoczyła
-            removeItem(islandItems[0]);
-            delete islandItems[0];
-            islandItems.erase(islandItems.begin());
+            removeItem(getIslandItems()[0]);
+            delete getIslandItems()[0];
+            getIslandItems().erase(getIslandItems().begin());
 
             // dodanie wyspy
-            IslandItem* isI = new IslandItem(logicRoad->getIslands().back());
+            IslandItem* isI = new IslandItem(getLogicRoad()->getIslands().back());
             addItem(isI);
-            islandItems.push_back(isI);
-
+            getIslandItems().push_back(isI);
             // !!!trzeba napisać wizualizację żaby na wyspie!!!
         }
     }

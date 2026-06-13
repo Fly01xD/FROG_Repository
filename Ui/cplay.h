@@ -3,8 +3,9 @@
 
 #include <QWidget>
 #include <QGraphicsView>
-#include "gamescene.h"
 #include "gameview.h"
+class CGame;
+
 class MainWindow;
 
 class CPlay : public QWidget {
@@ -13,14 +14,18 @@ public:
     CPlay(MainWindow &window, QWidget *parent = nullptr);
     ~CPlay();
     //metoda odpowiedzialna za stworzenie graficzne
-    void setupGameView(GameScene* _scene);
+    void setupGameView(CGame *_game);
 
     //metoda
-    void Play();
+    void startUser();
+    void startAI();
 private:
     MainWindow &m_window;
     GameView *gView;
     GameScene *sGame;
+    CGame* game;
+private slots:
+    void frogDied();
 };
 
 #endif // CPLAY_H

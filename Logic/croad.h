@@ -22,12 +22,13 @@ class CRoad
     std::vector<CIsland*> Islands;
     unsigned Difficulty;
     int Distance;
+    CFrog* frog;
 
 public:
     CRoad(gameDifficulty _diff);
     ~CRoad();
 
-    void updateGame(double dt);
+    frogState updateGame(double dt);
     void gameEnd(); // to trzeba jeszcze napisać
 
     roadInfrastructure jump(unsigned &_njump);
@@ -35,6 +36,7 @@ public:
     //gettery settery
     std::vector<CLane*> getLanes();
     std::vector<CIsland*> getIslands();
+    void setDifficulty(gameDifficulty _diff) {Difficulty = _diff+1;}
 };
 
 #endif // CROAD_H

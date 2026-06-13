@@ -8,14 +8,12 @@
 #include "IslandItem.h"
 #include "croad.h"
 #include <QGraphicsScene>
+class CPlayerBase;
 
 class GameScene : public QGraphicsScene
 {
-protected:
     // logika sceny
     CRoad* logicRoad;
-    // zmienna do skakania (nie wiem jak inaczej to zrobić)
-    unsigned njump;
 
     // Graphics items (dzieci sceny)
     std::vector<LaneItem*> laneItems;
@@ -23,13 +21,36 @@ protected:
     std::vector<CrossingItem*> crossingItems;
     std::vector<VehicleItem*> vehicleItems;
     FrogItem* frogItem;
+
+    CPlayerBase* player; // gadanie z graczem
 public:
-    GameScene(gameDifficulty _diff);
+    GameScene(gameDifficulty _diff, CPlayerBase* _player);
     ~GameScene();
 
     // synchronizacja logiki z ui
     void synchLogic();
-    // skakanie żaby
+    // krok symulacji gry
+    frogState updateGame();
+
+    // niestety settery i gettery:
+    CRoad* getLogicRoad() const { return logicRoad; }
+    std::vector<LaneItem*>& getLaneItems() { return laneItems;}
+    std::vector<IslandItem*>& getIslandItems() { return islandItems; }
+    std::vector<CrossingItem*>& getCrossingItems() { return crossingItems; }
+    std::vector<VehicleItem*>& getVehicleItems() { return vehicleItems; }
+    FrogItem* getFrogItem() const { return frogItem; }
+
+    void setLogicRoad(CRoad* road) { logicRoad = road; }
+    void setNjump(unsigned jump) { njump = jump; }
+    void setLaneItems(const std::vector<LaneItem*>& items) { laneItems = items; }
+    void setIslandItems(const std::vector<IslandItem*>& items) { islandItems = items; }
+    void setCrossingItems(const std::vector<CrossingItem*>& items) { crossingItems = items; }
+    void setVehicleItems(const std::vector<VehicleItem*>& items) { vehicleItems = items; }
+    void setFrogItem(FrogItem* frog) { frogItem = frog; }
+
+    // skakanie żaby dla czlowieka
+    void keyPressEvent(QKeyEvent* event) override;
+    // wrócić jak napisany człowiek
 };
 
 #endif // GAMESCENE_H

@@ -2,14 +2,13 @@
 #define GAMEVIEW_H
 
 #include <qgraphicsview.h>
-#include <gamescene.h>
+#include <userscene.h>
 
 class GameView : public QGraphicsView
 {
-    GameScene* sGame;
-    QTimer* logicTimer;
+
 public:
-    GameView(GameScene *_gamescene);
+    GameView();
     ~GameView();
 private slots:
     void updateScene();

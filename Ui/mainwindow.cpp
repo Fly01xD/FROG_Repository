@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 #include <qgraphicsview.h>
 
-MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent, CGame *_game): QMainWindow(parent)
 {
     //Inicjalizacja stosu widgetów, który wybiera nr ideksu w zależności od tego
     //co kliknie urzytkownik
@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
     menuScreen->setupMenu();
     leaderboardScreen->setupLeaderboard();
     settingsScreen->setupSettings();
-    playScreen->setupGameView();
+    playScreen->setupGameView(_game);
 
     stackedWidget->addWidget(menuScreen);        // 0
     stackedWidget->addWidget(leaderboardScreen); // 1

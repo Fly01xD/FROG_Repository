@@ -12,13 +12,13 @@ class CMenu;
 class CLeaderboard;
 class CSettings;
 class CPlay;
-class CAI;
+class CGame;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr, CGame* _game = nullptr);
     ~MainWindow();
 
     //gettery zwracające adres konkretnej sceny
@@ -27,7 +27,6 @@ public:
     CLeaderboard* getLeaderboard()     {return leaderboardScreen; }
     CSettings* getSettings()           {return settingsScreen; }
     CPlay* getPlay()                   {return playScreen; }
-    CAI* getAI()                       {return AIScreen; }
     gameDifficulty& getDifficulty()    {return currentDiff; }
 
 private:
@@ -38,6 +37,5 @@ private:
     CLeaderboard *leaderboardScreen;
     CSettings *settingsScreen;
     CPlay *playScreen;
-    CAI* AIScreen;
 };
 #endif // MAINWINDOW_H

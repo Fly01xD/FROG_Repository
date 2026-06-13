@@ -1,9 +1,10 @@
 #include "gamescene.h"
+#include "cplayerbase.h"
 
 #include <QKeyEvent>
 
-GameScene::GameScene(gameDifficulty _diff)
-    : logicRoad(new CRoad(_diff)), njump(0)
+GameScene::GameScene(gameDifficulty _diff, CPlayerBase *_player)
+    : logicRoad(new CRoad(_diff)), player(_player)
 {
     synchLogic();
 }
@@ -75,6 +76,19 @@ void GameScene::synchLogic()
             addItem(frogI);
             frogItem = frogI;
         }
+    }
+}
+
+frogState GameScene::updateGame()
+{
+    return logicRoad->updateGame(1);
+}
+// metoda skakania pod przyciskiem
+void GameScene::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Space)
+    {
+        player->jumpOnKey();
     }
 }
 

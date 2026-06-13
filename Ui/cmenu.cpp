@@ -1,5 +1,4 @@
 #include "cmenu.h"
-#include "cai.h"
 #include "mainwindow.h"
 #include "cleaderboard.h" // Dołączamy, bo musimy znać klasę do connect
 #include "csettings.h"
@@ -36,9 +35,9 @@ void CMenu::setupMenu()
     layout->addWidget(btnAI);
     layout->addWidget(btnSett);
 
-    connect(btnPlay, &QPushButton::clicked, m_window.getPlay(), &CPlay::Play);
+    connect(btnPlay, &QPushButton::clicked, m_window.getPlay(), &CPlay::startUser);
     connect(btnLead, &QPushButton::clicked, m_window.getLeaderboard(), &CLeaderboard::showLeaderboard);
-    connect(btnAI, &QPushButton::clicked, m_window.getAI(), &CAI::startAI);
+    connect(btnAI, &QPushButton::clicked, m_window.getPlay(), &CPlay::startAI);
     connect(btnSett, &QPushButton::clicked, m_window.getSettings(), &CSettings::showSettings);
 }
 
