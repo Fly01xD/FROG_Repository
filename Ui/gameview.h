@@ -8,7 +8,7 @@ class GameView : public QGraphicsView
 {
 
 public:
-    GameView();
+    GameView(QWidget* parent);
     ~GameView();
 private slots:
     void updateScene();

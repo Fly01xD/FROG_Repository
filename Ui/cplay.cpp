@@ -1,6 +1,8 @@
 #include "cplay.h"
 #include "mainwindow.h"
 #include <QVBoxLayout>
+#include "cgame.h"
+
 class CPlayerBase;
 
 CPlay::CPlay(MainWindow &window, QWidget *parent)
@@ -8,10 +10,11 @@ CPlay::CPlay(MainWindow &window, QWidget *parent)
 {
     sGame = nullptr;
     gView = nullptr;
+    game = nullptr;
 }
 void CPlay::setupGameView(CGame* _game)
 {
-    gView = new GameView;
+    gView = new GameView(this);
     game = _game;
 }
 
@@ -21,10 +24,10 @@ void CPlay::startUser()
     {
         //stowrzenie nowej gry ale tylko wtedy jeśli jeszcze nie istnieje
         //po przegranej albo po odpaleniu aplikacji
-        CPlayerBase* p = game->beginGame();
-        sGame = new GameScene (m_window.getDifficulty(),p);
-        // TRZEBA NAPISAĆ TWORZENIE GRACZA CZLOWIEKA
-
+        sGame = new GameScene (this,game->getRoad(),
+                              m_window.getDifficulty(),
+                              game->beginGame());
+        game->setObserverSceneAndScreen(sGame, this); // tworzenie obserwatora
         //ustawienie kamery na nową planszę
         gView->setScene(sGame);
 
@@ -43,9 +46,10 @@ void CPlay::startAI()
 {
     if(sGame == nullptr)
     {
-        CPlayerBase* p = game->beginGameAI();
-        sGame = new GameScene (m_window.getDifficulty(),p);
-        // TRZEBA NAPISAĆ TWORZENIE GRACZA CZLOWIEKA
+        sGame = new GameScene (this,game->getRoad(),
+                              m_window.getDifficulty(),
+                              game->beginGameAI());
+        game->setObserverSceneAndScreen(sGame,this);
         gView->setScene(sGame);
         m_window.getStackedWidget()->setCurrentIndex(3);
     }
@@ -59,5 +63,17 @@ void CPlay::startAI()
 
 void CPlay::frogDied()
 {
-    // trzeba napisać co jak żaba umrze
+    delete sGame;
+    sGame = nullptr;
+    m_window.getStackedWidget()->setCurrentIndex(0);
+}
+
+void CPlay::pause()
+{
+    m_window.getStackedWidget()->setCurrentIndex(0);
+}
+
+void CPlay::unPause()
+{
+    m_window.getStackedWidget()->setCurrentIndex(3);
 }

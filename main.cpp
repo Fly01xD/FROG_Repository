@@ -6,8 +6,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    CGame game; // - kontener na grę
+    CGame g; // - kontener na grę
+    MainWindow w(nullptr, &g);
     w.show();
     return QCoreApplication::exec();
 }

@@ -15,17 +15,20 @@ public:
     ~CPlay();
     //metoda odpowiedzialna za stworzenie graficzne
     void setupGameView(CGame *_game);
+    void setObserver(CObserver* _obs) {observer = _obs;}
 
     //metoda
     void startUser();
     void startAI();
+    void frogDied();
+    void pause();
+    void unPause();
 private:
     MainWindow &m_window;
     GameView *gView;
     GameScene *sGame;
     CGame* game;
-private slots:
-    void frogDied();
+    CObserver* observer;
 };
 
 #endif // CPLAY_H

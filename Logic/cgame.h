@@ -1,10 +1,8 @@
 #ifndef CGAME_H
 #define CGAME_H
 
-#include "mainwindow.h"
 #include "cobserver.h"
-
-class CRoad;
+#include "croad.h"
 class CPlayerBase;
 class CPlay;
 
@@ -12,22 +10,21 @@ class CGame
 {
 
 public:
-    CGame(MainWindow* _window);
+    CGame();
     ~CGame();
 
-    // setter dla CPlay
-    void setPlayer(CPlayerBase* _player) {player = _player;}
     // odpala timery i daje hp dla żaby;
-    CPlayerBase* beginGameAI(); // jeszcze trzeba napisać
+    CPlayerBase* beginGameAI(); // jeszcze trzeba napisać timery
     CPlayerBase* beginGame();
 
-    //impuls przekazywany z CBasePlayer do CRoad
-    //unsigned sprawia, że n musi być liczbą dodatnią
+    void setObserverSceneAndScreen(GameScene* _scene, CPlay* _play)
+        {observer = CObserver(_scene, _play);}
+    CRoad* getRoad();
+    void newRoad();
 private:
-    MainWindow* mWindow;
-    CRoad logicRoad;
-    CPlayerBase* player;   // tutaj musi być wskaźnik
-    CObserver* observer;
+    CObserver observer;
+    CRoad* logicRoad; // niestety musi to być wskaźnik bo jest to QObiekt
+    CPlayerBase* player; // tutaj musi być wskaźnik
 };
 
 #endif // CGAME_H

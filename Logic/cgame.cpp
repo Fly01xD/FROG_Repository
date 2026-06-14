@@ -6,25 +6,25 @@
 #include "cplayerai.h"
 #include "cplay.h"
 
-CGame::CGame(MainWindow* _window)
-    : mWindow(_window),
-    logicRoad(mWindow->getDifficulty()),
+CGame::CGame()
+    :observer(CObserver(nullptr, nullptr)),
+    logicRoad(new CRoad(gameDifficulty::easy,&observer)),
     player(nullptr)
-{
+{}
 
-}
 CGame::~CGame()
 {
     delete player;
+    delete logicRoad;
 }
 
 CPlayerBase* CGame::beginGame()
 {
-    player = new CPlayer(&logicRoad);
+    player = new CPlayer(logicRoad);
     return player;
 }
 CPlayerBase* CGame::beginGameAI()
 {
-    player = new CPlayerAI(&logicRoad);
+    player = new CPlayerAI(logicRoad);
     return player;
 }

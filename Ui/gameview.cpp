@@ -1,6 +1,6 @@
 #include "gameview.h"
 
-GameView::GameView()
+GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {}
 
 GameView::~GameView()

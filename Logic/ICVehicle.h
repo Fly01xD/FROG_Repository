@@ -31,7 +31,6 @@ public:
     virtual vehDirection getDirection() = 0;
 
     virtual double getPosition() = 0;
-    virtual void setPosition(int _pos) = 0;
 
 };
 

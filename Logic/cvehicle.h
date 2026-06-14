@@ -29,7 +29,6 @@ public:
     vehDirection getDirection() override;
 
     double getPosition() override;
-    void setPosition(int _pos) override;
 
     vehState getState();
     void setState(vehState _state);
