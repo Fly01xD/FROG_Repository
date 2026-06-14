@@ -4,6 +4,7 @@
 #include "cobserver.h"
 #include "croad.h"
 class CPlayerBase;
+class CPlay;
 
 class CGame
 {

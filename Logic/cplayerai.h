@@ -26,6 +26,7 @@ public:
     void jumpOnKey() override;
     void jumpOnCalc() override;
 
+    unsigned n = getN();
 private slots:
     bool calculate(); // decyzja o skakaniu dlatego bool
     // 1 - skacze, 0 - stoi

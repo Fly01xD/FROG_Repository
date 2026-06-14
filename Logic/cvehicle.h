@@ -32,7 +32,6 @@ public:
 
     vehState getState();
     void setState(vehState _state);
-
 };
 
 #endif // CVEHICLE_H

@@ -20,6 +20,7 @@ public:
     virtual void jumpOnCalc() = 0;
 
     CRoad* getRoad() {return logicRoad;}
+    unsigned getN() const {return n;}
 };
 
 #endif // CPLAYERBASE_H

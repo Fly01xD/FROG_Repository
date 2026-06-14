@@ -1,4 +1,5 @@
 #include "cplayerai.h"
+#include "croad.h"
 #include <cmath>
 
 CPlayerAI::CPlayerAI(CRoad *_road)
@@ -45,8 +46,63 @@ void CPlayerAI::jumpOnCalc()
         }
     }
 }
-
 bool CPlayerAI::calculate()
 {
-    return false;
+    //pobieramy stan drogi z CRoad
+    CRoad* road = getRoad();
+    std::vector<CLane*> lane = road->getLanes();
+    std::vector<CIsland*> island = road->getIslands();
+
+    //zmienna która przybierze wartość pasa, na który będzie skakała żaba,
+    //po to żeby wiedzieć, z którego pasa zczytać informacje o samochodach
+    CLane* targetLane = nullptr;
+
+    //tworzymy zmienna, która będzie mówiła nam o położeniu żaby
+    int frogX = 0;
+
+    //jeśli żaba znajduje się na wyspie to przed nią jest pas 0
+    if (island[0]->getFrog() != nullptr)
+    {
+        targetLane = lane[0];
+    }
+    else if (lane[0]->Crossing->getFrog() != nullptr)
+    {
+        if (n == 0)
+        {
+            targetLane = lane[0];
+        }
+        else if(n > 0 && n < lane.size())
+        {
+            targetLane = lane[1];
+        }
+        else if(n == lane.size())
+        {
+            return true;
+        }
+    }
+    //jeśli nic nie przypiszemy do tragetLane to znaczy że następna jest wyspa
+    //więc żaba może skoczyć
+    if (targetLane == nullptr)
+    {
+        return true;
+    }
+
+    //pobieramy lokalizacje samochodów na następnym pasie
+    std::vector<CVehicle*> vehicles = targetLane->getVehicles();
+
+    for (auto v : vehicles)
+    {
+        int vehicleX = v->getPosition();
+
+        // Dystans matematyczny |x| samochodu do żaby
+        int distance = std::abs(vehicleX - frogX);
+        int dynamicSafeDistance = v->getLength() * 2;
+
+        if (distance < dynamicSafeDistance)
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

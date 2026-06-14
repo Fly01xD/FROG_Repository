@@ -3,6 +3,8 @@
 
 #include "cplayerai.h"
 #include "cplayer.h"
+#include "cplayerai.h"
+#include "cplay.h"
 
 CGame::CGame()
     :observer(CObserver(nullptr, nullptr)),
@@ -21,18 +23,6 @@ CPlayerBase* CGame::beginGame()
     player = new CPlayer(logicRoad);
     return player;
 }
-
-CRoad *CGame::getRoad()
-{
-    return logicRoad;
-}
-
-void CGame::newRoad()
-{
-    delete logicRoad;
-    logicRoad = new CRoad(gameDifficulty::easy,&observer);
-}
-
 CPlayerBase* CGame::beginGameAI()
 {
     player = new CPlayerAI(logicRoad);
