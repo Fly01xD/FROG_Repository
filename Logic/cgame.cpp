@@ -5,7 +5,9 @@
 #include "cplayer.h"
 
 CGame::CGame()
-    :observer(CObserver(nullptr, nullptr)), logicRoad(new CRoad(gameDifficulty::easy,&observer))
+    :observer(CObserver(nullptr, nullptr)),
+    logicRoad(new CRoad(gameDifficulty::easy,&observer)),
+    player(nullptr)
 {}
 
 CGame::~CGame()

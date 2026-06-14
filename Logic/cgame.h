@@ -23,7 +23,7 @@ public:
 private:
     CObserver observer;
     CRoad* logicRoad; // niestety musi to być wskaźnik bo jest to QObiekt
-    CPlayerBase* player = nullptr; // tutaj musi być wskaźnik
+    CPlayerBase* player; // tutaj musi być wskaźnik
 };
 
 #endif // CGAME_H
