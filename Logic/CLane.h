@@ -26,7 +26,7 @@ public:
     void addVehicle(CCar* car);
     void addVehicle(CMotor* motor);
     void spawnVehicle();
-    void despawnVehicle();
+    void despawnVehicle(CVehicle* target);
 
     // metoda do wywołania ruchu pojazdu i
     // sprawdzenie czy pojazd wjechal na przejscie

@@ -24,13 +24,15 @@ class GameScene : public QGraphicsScene
 
     CPlayerBase* player; // gadanie z graczem
 public:
-    GameScene(gameDifficulty _diff, CPlayerBase* _player);
+    GameScene(QObject* parent,CRoad* _road ,gameDifficulty _diff, CPlayerBase* _player);
     ~GameScene();
 
     // synchronizacja logiki z ui
-    void synchLogic();
+    void synchLogic(gameDifficulty _diff);
     // krok symulacji gry
-    frogState updateGame();
+    void drawGame();
+    // przesunięcie (iluzja) żaby
+    void moveGame();
 
     // niestety settery i gettery:
     CRoad* getLogicRoad() const { return logicRoad; }
@@ -41,7 +43,6 @@ public:
     FrogItem* getFrogItem() const { return frogItem; }
 
     void setLogicRoad(CRoad* road) { logicRoad = road; }
-    void setNjump(unsigned jump) { njump = jump; }
     void setLaneItems(const std::vector<LaneItem*>& items) { laneItems = items; }
     void setIslandItems(const std::vector<IslandItem*>& items) { islandItems = items; }
     void setCrossingItems(const std::vector<CrossingItem*>& items) { crossingItems = items; }
@@ -50,7 +51,6 @@ public:
 
     // skakanie żaby dla czlowieka
     void keyPressEvent(QKeyEvent* event) override;
-    // wrócić jak napisany człowiek
 };
 
 #endif // GAMESCENE_H

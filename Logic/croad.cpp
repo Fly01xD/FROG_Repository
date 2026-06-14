@@ -1,17 +1,25 @@
 #include "croad.h"
 #include "SGameData.h"
 #include "cwriter.h"
+#include "CObserver.h"
 
-CRoad::CRoad(gameDifficulty _diff) : Distance(100)
+CRoad::CRoad(gameDifficulty _diff, CObserver* _obs)
+    : Distance(100), State(paused), observer(_obs)
 {
     // ustawianie liczby HP dla poziomów trudnośći
-    // (poziom trudności i początkowa liczba HP jest tożsama)
+    // (poziom trudności i początkowa liczba HP jest tożsama+1
     Difficulty = _diff+1;
+
+    // ustwawianie QTimera pzdr
+    logicTimer.setSingleShot(false);
+    logicTimer.setInterval(500);
+    connect(&logicTimer, &QTimer::timeout,
+            this, &::CRoad::updateGame);
 
     // tworzenie żaby na wyspie
     CIsland* island = new CIsland;
     island->addFrog(Difficulty);
-    frog = island->getFrog();
+    Frog = island->getFrog();
     Islands.push_back(island);
 
     // tworzenie pasóW
@@ -24,36 +32,44 @@ CRoad::CRoad(gameDifficulty _diff) : Distance(100)
 
 CRoad::~CRoad()
 {
-    for(auto l : Lanes)
-        delete l;
-    for(auto i : Islands)
-        delete i;
+    for(auto l = Lanes.begin(); l != Lanes.end();)
+    {
+        delete *l;
+        l = Lanes.erase(l);
+    }
+    for(auto i = Islands.begin(); i != Islands.end();)
+    {
+        delete *i;
+        i = Islands.erase(i);
+    }
 }
 
-frogState CRoad::updateGame(double _dt)
+void CRoad::updateGame() // rysowanie dla samochodóW
 {
-    // ruch pojazdów
-    for(auto l : Lanes)
+    if(State == running)
     {
-        l->update(_dt);
-        l->despawnVehicle();
-    }
+        // ruch pojazdów
+        for(auto l : Lanes)
+        {
+            l->update(logicTimer.interval());
+            l->spawnVehicle();
+        }
+        observer->informSceneDraw();
 
-    // sprawdzam czy żaba żyje
-    if(Islands[0]->getFrog()->getState() == frogState::dead
-    || Lanes[0]->Crossing->getFrog()->getState() == frogState::dead)
-    {
-        gameEnd();
-        return dead;
+        if(Frog->getState() == frogState::dead)
+        {
+            gameEnd();
+        }
     }
-    else
-        return alive;
 }
 
 void CRoad::gameEnd()
 {
-    //Pobiera dane z pasa pierwszego (na którym znajduje się żaba w której jest ilość punktów)
-    int zdobytePunkty = Lanes[0]->Crossing->getFrog()->getPoints();
+    State = paused;
+    logicTimer.stop();
+
+    // żaba w której jest ilość punktów
+    int zdobytePunkty = Frog->getPoints();
 
     //Zapisywanie danych z żaby do struktury
     GameData data;
@@ -61,6 +77,33 @@ void CRoad::gameEnd()
 
     //Zapisywanie do pliku
     CWriter writer(&data);
+
+    observer->informScreenEnd();
+}
+
+void CRoad::gameBegin()
+{
+    if(State == paused)
+    {
+        State = running;
+        logicTimer.start();
+    }
+}
+
+void CRoad::gamePause()
+{
+    if(State == running)
+    {
+        logicTimer.stop();
+        State = paused;
+        observer->informScreenPause();
+    }
+    else
+    {
+        logicTimer.start();
+        State = running;
+        observer->informScreenUnPause();
+    }
 }
 
 
@@ -68,6 +111,8 @@ void CRoad::gameEnd()
 //  lub pasie o indeksie 0 w tablicy
 roadInfrastructure CRoad::jump(unsigned &_njump)
 {
+    if(State == running)
+    {
     // kiedy żaba na wyspie
     if(Islands[0]->getFrog())
     {
@@ -119,6 +164,8 @@ roadInfrastructure CRoad::jump(unsigned &_njump)
         // wysyłam sygnał, że chcę dodać do ui drogi pas ruchu
         return roadInfrastructure::lane;
     }
+    }
+    observer->informSceneMove(); // BARDZO WAŻNE INFORMUJE ZE ŻABA SKOCZYŁA
 }
 
 std::vector<CLane *> CRoad::getLanes()  {return Lanes;}

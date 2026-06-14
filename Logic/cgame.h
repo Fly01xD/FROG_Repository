@@ -1,27 +1,29 @@
 #ifndef CGAME_H
 #define CGAME_H
 
-#include "mainwindow.h"
-class CRoad;
+#include "cobserver.h"
+#include "croad.h"
 class CPlayerBase;
 
 class CGame
 {
 
 public:
-    CGame(MainWindow* _window);
+    CGame();
     ~CGame();
 
-    // setter dla CPlay
-    void setPlayer(CPlayerBase* _player) {player = _player;}
     // odpala timery i daje hp dla żaby;
-    CPlayerBase* beginGameAI(); // jeszcze trzeba napisać
+    CPlayerBase* beginGameAI(); // jeszcze trzeba napisać timery
     CPlayerBase* beginGame();
+
+    void setObserverSceneAndScreen(GameScene* _scene, CPlay* _play)
+        {observer = CObserver(_scene, _play);}
+    CRoad* getRoad();
+    void newRoad();
 private:
-    MainWindow* mWindow;
-    CRoad logicRoad;
-    CPlayerBase* player; // tutaj musi być wskaźnik
-    // jeszcze należy wpisać obserwatora
+    CObserver observer;
+    CRoad* logicRoad; // niestety musi to być wskaźnik bo jest to QObiekt
+    CPlayerBase* player = nullptr; // tutaj musi być wskaźnik
 };
 
 #endif // CGAME_H

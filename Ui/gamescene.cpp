@@ -3,10 +3,10 @@
 
 #include <QKeyEvent>
 
-GameScene::GameScene(gameDifficulty _diff, CPlayerBase *_player)
-    : logicRoad(new CRoad(_diff)), player(_player)
+GameScene::GameScene(QObject* parent, CRoad* _road, gameDifficulty _diff, CPlayerBase *_player)
+    : logicRoad(_road), player(_player)
 {
-    synchLogic();
+    synchLogic(_diff);
 }
 
 GameScene::~GameScene()
@@ -39,7 +39,7 @@ GameScene::~GameScene()
 
 // metoda do podłączenia ItemóW graficznych do klas logicznych
 // oraz dodania ich na scenę i zrobienie rodziecielstwa
-void GameScene::synchLogic()
+void GameScene::synchLogic(gameDifficulty _diff)
 {
     for(auto l : logicRoad->getLanes())
     {
@@ -71,6 +71,8 @@ void GameScene::synchLogic()
         // trzeba jeszcze napisać rozmieszczenie wysp
         if(is->getFrog())
         {
+            // ustawienie dla żaby poziomu trudności
+            is->getFrog()->setHP(_diff+1);
             // dodanie żaby do sceny
             FrogItem* frogI = new FrogItem(is->getFrog());
             addItem(frogI);
@@ -79,16 +81,26 @@ void GameScene::synchLogic()
     }
 }
 
-frogState GameScene::updateGame()
+void GameScene::drawGame()
 {
-    return logicRoad->updateGame(1);
+    // TRZEBA NAPISAĆ RYSOWANIE ITEMÓW
 }
+
+void GameScene::moveGame()
+{
+    // TRZEBA NAPISAĆ RYSOWANIE RUCHU OTOCZENIA WOKÓŁ ŻABY
+}
+
 // metoda skakania pod przyciskiem
 void GameScene::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Space)
     {
         player->jumpOnKey();
+    }
+    if(event->key() == Qt::Key_Escape)
+    {
+        logicRoad->gamePause();
     }
 }
 
