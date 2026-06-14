@@ -1,5 +1,5 @@
 #include "vehicleitem.h"
 
-VehicleItem::VehicleItem(QGraphicsItem* parent, CVehicle *_veh)
+VehicleItem::VehicleItem(CVehicle *_veh, const QString &imagePath, QGraphicsItem *parent)
     : logicVehicle(_veh), QGraphicsPixmapItem(parent)
 {}

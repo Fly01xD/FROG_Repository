@@ -8,7 +8,10 @@ class IslandItem : public QGraphicsPixmapItem
 {
     CIsland* logicIsland;
 public:
-    IslandItem(CIsland* _island);
+    IslandItem(CIsland* _island, QGraphicsItem* parent = nullptr) : QGraphicsPixmapItem(parent)
+    {
+        setPixmap(QPixmap("assets/island.png"));
+    }
 };
 
 #endif // ISLANDITEM_H
