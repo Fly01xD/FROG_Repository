@@ -67,16 +67,17 @@ bool CPlayerAI::calculate()
     }
     else if (lane[0]->Crossing->getFrog() != nullptr)
     {
-        //jeśli ilość skoków równa się ilośći pasóW to przed nią musi być wyspa
-        //więc żaba skacze
-        if (n == lane.size())
+        if (n == 0)
         {
-            return true;
+            targetLane = lane[0];
         }
-        //jeśli nie to żaba patrzy na to co jest przed nią
-        else if(n < lane.size())
+        else if(n > 0 && n < lane.size())
         {
             targetLane = lane[1];
+        }
+        else if(n == lane.size())
+        {
+            return true;
         }
     }
     //jeśli nic nie przypiszemy do tragetLane to znaczy że następna jest wyspa
