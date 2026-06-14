@@ -6,10 +6,9 @@
 #include "cplayerai.h"
 #include "cplay.h"
 
-CGame::CGame(MainWindow* _window, CPlay* _playScreen)
+CGame::CGame(MainWindow* _window)
     : mWindow(_window),
     logicRoad(mWindow->getDifficulty()),
-    playScreen(_playScreen),
     player(nullptr)
 {
 
@@ -28,8 +27,4 @@ CPlayerBase* CGame::beginGameAI()
 {
     player = new CPlayerAI(&logicRoad);
     return player;
-}
-void CGame::executeJump(unsigned n)
-{
-    logicRoad.jump(n);
 }

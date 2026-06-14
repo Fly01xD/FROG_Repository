@@ -46,7 +46,6 @@ void CPlayerAI::jumpOnCalc()
         }
     }
 }
-
 bool CPlayerAI::calculate()
 {
     //pobieramy stan drogi z CRoad

@@ -12,7 +12,7 @@ class CGame
 {
 
 public:
-    CGame(MainWindow* _window, CPlay* _playScreen);
+    CGame(MainWindow* _window);
     ~CGame();
 
     // setter dla CPlay
@@ -23,13 +23,11 @@ public:
 
     //impuls przekazywany z CBasePlayer do CRoad
     //unsigned sprawia, że n musi być liczbą dodatnią
-    void executeJump(unsigned n);
 private:
     MainWindow* mWindow;
     CRoad logicRoad;
     CPlayerBase* player;   // tutaj musi być wskaźnik
     CObserver* observer;
-    CPlay* playScreen;
 };
 
 #endif // CGAME_H
