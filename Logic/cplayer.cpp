@@ -16,3 +16,8 @@ void CPlayer::jumpOnCalc()
 {
     // tu ma być pusto!
 }
+
+void CPlayer::playerAIPause()
+{
+    // tu ma być pusto!
+}

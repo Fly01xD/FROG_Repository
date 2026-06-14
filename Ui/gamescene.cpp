@@ -91,6 +91,11 @@ void GameScene::moveGame()
     // TRZEBA NAPISAĆ RYSOWANIE RUCHU OTOCZENIA WOKÓŁ ŻABY
 }
 
+void GameScene::unPauseAI()
+{
+    player->playerAIPause();
+}
+
 // metoda skakania pod przyciskiem
 void GameScene::keyPressEvent(QKeyEvent *event)
 {
@@ -101,6 +106,7 @@ void GameScene::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_Escape)
     {
         logicRoad->gamePause();
+        player->playerAIPause();
     }
 }
 

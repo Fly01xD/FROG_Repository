@@ -12,6 +12,10 @@ CPlay::CPlay(MainWindow &window, QWidget *parent)
     gView = nullptr;
     game = nullptr;
 }
+
+CPlay::~CPlay()
+{}
+
 void CPlay::setupGameView(CGame* _game)
 {
     gView = new GameView(this);
@@ -39,6 +43,8 @@ void CPlay::startUser()
     {
         gView->setScene(sGame);
         m_window.getStackedWidget()->setCurrentIndex(3);
+        game->getRoad()->gameBegin(); // no niestety, ale muszę tak zrobić
+        sGame->unPauseAI();
     }
 }
 
@@ -57,6 +63,8 @@ void CPlay::startAI()
     {
         gView->setScene(sGame);
         m_window.getStackedWidget()->setCurrentIndex(3);
+        game->getRoad()->gameBegin(); // no niestety, ale muszę tak zrobić
+        sGame->unPauseAI();
     }
 }
 

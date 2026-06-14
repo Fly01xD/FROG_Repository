@@ -11,6 +11,7 @@ public:
 
     void jumpOnKey() override;
     void jumpOnCalc() override;
+    void playerAIPause() override;
 };
 
 #endif // CPLAYER_H

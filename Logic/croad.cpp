@@ -94,14 +94,14 @@ void CRoad::gamePause()
 {
     if(State == running)
     {
-        logicTimer.stop();
         State = paused;
+        logicTimer.stop();
         observer->informScreenPause();
     }
     else
     {
-        logicTimer.start();
         State = running;
+        logicTimer.start();
         observer->informScreenUnPause();
     }
 }

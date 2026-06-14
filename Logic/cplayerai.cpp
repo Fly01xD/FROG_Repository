@@ -15,6 +15,7 @@ CPlayerAI::CPlayerAI(CRoad *_road)
     checkTimer.setSingleShot(false);
     connect(&checkTimer, &QTimer::timeout,
             this, &CPlayerAI::jumpOnCalc);
+    checkTimer.start();
 }
 
 CPlayerAI::~CPlayerAI()
@@ -46,6 +47,15 @@ void CPlayerAI::jumpOnCalc()
         }
     }
 }
+
+void CPlayerAI::playerAIPause()
+{
+    if(getRoad()->getState() == running)
+        checkTimer.stop();
+    else
+        checkTimer.start();
+}
+
 bool CPlayerAI::calculate()
 {
     //pobieramy stan drogi z CRoad

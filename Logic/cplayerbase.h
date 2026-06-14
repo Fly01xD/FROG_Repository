@@ -19,6 +19,8 @@ public:
 
     virtual void jumpOnCalc() = 0;
 
+    virtual void playerAIPause() = 0;
+
     CRoad* getRoad() {return logicRoad;}
     unsigned getN() const {return n;}
 };

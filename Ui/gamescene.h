@@ -34,6 +34,8 @@ public:
     // przesunięcie (iluzja) żaby
     void moveGame();
 
+    void unPauseAI();
+
     // niestety settery i gettery:
     CRoad* getLogicRoad() const { return logicRoad; }
     std::vector<LaneItem*>& getLaneItems() { return laneItems;}
