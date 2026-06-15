@@ -8,7 +8,7 @@ class CrossingItem : public QGraphicsPixmapItem
 {
     CCrossing* logicCrossing;
 public:
-    CrossingItem(QGraphicsItem* parent, CCrossing* _cros);
+    CrossingItem(CCrossing* _cros, QGraphicsPixmapItem* parent = nullptr);
 };
 
 #endif // CROSSINGITEM_H
