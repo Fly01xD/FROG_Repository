@@ -20,9 +20,10 @@ class GameScene : public QGraphicsScene
     std::vector<IslandItem*> islandItems;
     std::vector<CrossingItem*> crossingItems;
     std::vector<VehicleItem*> vehicleItems;
-    FrogItem* frogItem;
+    std::vector<LaneItem*> m_mapRows;
 
     CPlayerBase* player; // gadanie z graczem
+    FrogItem* frogItem;    //wskaźnik na postać gracza
 public:
     GameScene(QObject* parent,CRoad* _road ,gameDifficulty _diff, CPlayerBase* _player);
     ~GameScene();
@@ -33,6 +34,8 @@ public:
     void drawGame();
     // przesunięcie (iluzja) żaby
     void moveGame();
+    //metoda ustawiająca wymiary i pozycje na scenie
+    void updateScaling(qreal windowWidth, qreal windowHeight);
 
     void unPauseAI();
 
@@ -53,6 +56,7 @@ public:
 
     // skakanie żaby dla czlowieka
     void keyPressEvent(QKeyEvent* event) override;
+
 };
 
 #endif // GAMESCENE_H

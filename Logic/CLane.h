@@ -1,5 +1,5 @@
-#ifndef CLANE_H
-#define CLANE_H
+#ifndef CLANE_H4
+#define CLANE_H4
 
 #include "ccar.h"
 #include "ccrossing.h"

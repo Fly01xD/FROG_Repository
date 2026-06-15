@@ -23,13 +23,12 @@ CRoad::CRoad(gameDifficulty _diff, CObserver* _obs)
     Islands.push_back(island);
 
     // tworzenie pasóW
-    for(int i = 0; i<2;i++)
+    for(int i = 0; i<3;i++)
     {
         CLane* lane = new CLane(Distance, down);
         Lanes.push_back(lane);
     }
 }
-
 CRoad::~CRoad()
 {
     for(auto l = Lanes.begin(); l != Lanes.end();)
@@ -43,7 +42,6 @@ CRoad::~CRoad()
         i = Islands.erase(i);
     }
 }
-
 void CRoad::updateGame() // rysowanie dla samochodóW
 {
     if(State == running)
@@ -62,7 +60,6 @@ void CRoad::updateGame() // rysowanie dla samochodóW
         }
     }
 }
-
 void CRoad::gameEnd()
 {
     State = paused;
@@ -80,7 +77,6 @@ void CRoad::gameEnd()
 
     observer->informScreenEnd();
 }
-
 void CRoad::gameBegin()
 {
     if(State == paused)
@@ -89,7 +85,6 @@ void CRoad::gameBegin()
         logicTimer.start();
     }
 }
-
 void CRoad::gamePause()
 {
     if(State == running)
