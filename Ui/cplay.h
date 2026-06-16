@@ -29,6 +29,9 @@ private:
     QGraphicsView *gView;
     GameScene *sGame;
     CGame* game;
+protected:
+    void showEvent(QShowEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // CPLAY_H

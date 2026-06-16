@@ -82,7 +82,9 @@ void GameScene::synchLogic(gameDifficulty _diff)
         {
             //przekazujemy konkretnego lena jako parenta konkretnego crossingu
             CrossingItem* crosI = new CrossingItem(l->Crossing, laneI);
-            crosI->setPos(laneW / 2.0, 0); // Środek pasa w lokalnych współrzędnych
+            //centrowanie pasa
+            qreal crossingW = crosI->pixmap().isNull() ? 0 : crosI->pixmap().width();
+            crosI->setPos((laneW / 2.0) - (crossingW / 2.0), 0);
         }
         for(auto v : l->getVehicles())
         {
@@ -119,11 +121,17 @@ void GameScene::synchLogic(gameDifficulty _diff)
             FrogItem* frogI = new FrogItem(is->getFrog());
             addItem(frogI);
             frogItem = frogI;
+            //ustawienie pozycji żaby na środek i na sam dół
+            if (!frogI->pixmap().isNull())
+            {
+                frogI->setPos((sceneRect().width() / 2.0) - (frogI->pixmap().width() / 2.0),
+                              (currentRowIndex * rowHeight) + (rowHeight / 2.0) - (frogI->pixmap().height() / 2.0));
+            }
         }
+        currentRowIndex++;
     }
     update();
 }
-//update silnika
 void GameScene::drawGame()
 {
     //przechodzimy przez każdy pas
@@ -209,46 +217,59 @@ void GameScene::moveGame()
 }
 void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
 {
-    setSceneRect(0, 0, windowWidth, windowHeight);
-
+    //ustawiamy prostokąt sceny pasujący do okna
+    setSceneRect(0,0,windowWidth,windowHeight);
     //dzielimy wysokość całego obecnie ekranu na 4 i tak dostajemy
     //wysokość jednego rzędu
     qreal rowHeight = windowHeight/4.0;
 
+    int index = 0;
     //skalowanie pasów, ponieważ pas jest parentem pojazdów i crossingów
     //to pojazdy i crossingi odrazu są skalowane
     for (LaneItem* lane : laneItems)
     {
+        lane->setPos(0, index * rowHeight);
         if (lane && !lane->pixmap().isNull())
         {
-            //tutaj liczmy skale, dzielimy wymiar okna na ilość pixeli pliku png
+            lane->setPos(0, index * rowHeight);
+
+            // Skalujemy pas tak, by wypełnił całą szerokość ekranu i pełną wysokość rzędu
             qreal scaleX = windowWidth / lane->pixmap().width();
             qreal scaleY = rowHeight / lane->pixmap().height();
-
-            //nakładamy tą skalę na pas (przy okazji na pojazd i crossing)
             lane->setTransform(QTransform::fromScale(scaleX, scaleY));
         }
+        index++;
     }
     //skalowanie wyspy (działa tak samo jak wyżej)
     for (IslandItem* island : islandItems)
     {
         if (island && !island->pixmap().isNull())
         {
+            // Skalujemy wyspę analogicznie do pasów
+            island->setPos(0, index * rowHeight);
+
             qreal scaleX = windowWidth / island->pixmap().width();
             qreal scaleY = rowHeight / island->pixmap().height();
             island->setTransform(QTransform::fromScale(scaleX, scaleY));
         }
+        index++;
     }
     //skalowanie żaby
     if (frogItem && !frogItem->pixmap().isNull())
     {
+        frogItem->setPos(0,index*rowHeight);
         qreal frogSize = rowHeight * 0.6;
         qreal scaleXY = frogSize / frogItem->pixmap().width();
         frogItem->setTransform(QTransform::fromScale(scaleXY, scaleXY));
 
-        //ustawiamy żabę w odpowiednim miejscu
-        qreal frogFixedX = (windowWidth / 2.0) - (frogSize / 2.0);
-        qreal frogFixedY = windowHeight - rowHeight + ((rowHeight - frogSize) / 2.0);
+        // Musimy policzyć fizyczny rozmiar żaby po przeskalowaniu
+        qreal scaledFrogW = frogItem->pixmap().width() * scaleXY;
+        qreal scaledFrogH = frogItem->pixmap().height() * scaleXY;
+
+        //ustawienie żaby w odpowiednim miejscu na podstawie jej rozmiaru
+        qreal frogFixedX = (windowWidth / 2.0) - (scaledFrogW / 2.0);
+        qreal frogFixedY = windowHeight - rowHeight + ((rowHeight - scaledFrogH) / 2.0);
+
         frogItem->setPos(frogFixedX, frogFixedY);
     }
 }

@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent, CGame *_game): QMainWindow(parent)
     stackedWidget->addWidget(playScreen);        // 3
 
     //ustawienie podstawowego rozmiaru okna
-    setWindowState(Qt::WindowFullScreen);
+    // setWindowState(Qt::WindowFullScreen);
 
     //ustaienie indeksu na 0 czyli menu główne (po odpaleniu ma się wyświetlić menu)
     stackedWidget->setCurrentIndex(0);
