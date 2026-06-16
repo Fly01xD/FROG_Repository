@@ -23,6 +23,20 @@ CPlayerBase* CGame::beginGame()
     player = new CPlayer(logicRoad);
     return player;
 }
+
+CRoad *CGame::getRoad()
+{
+    return logicRoad;
+}
+
+void CGame::newRoad()
+{
+    delete logicRoad;
+    logicRoad = new CRoad(gameDifficulty::easy,&observer);
+    delete player;
+    player = nullptr;
+}
+
 CPlayerBase* CGame::beginGameAI()
 {
     player = new CPlayerAI(logicRoad);

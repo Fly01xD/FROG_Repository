@@ -4,7 +4,7 @@
 
 CPlayerAI::CPlayerAI(CRoad *_road)
     : CPlayerBase(_road), gen(seed()),
-    minDelay(500), maxDelay(1500)
+    minDelay(500), maxDelay(1500), checkTimer(QTimer(this))
 {
     int mean = maxDelay - minDelay;
     int sigma = (maxDelay - minDelay)/6;

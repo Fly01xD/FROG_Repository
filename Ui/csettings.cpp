@@ -20,7 +20,7 @@ void CSettings::setupSettings()
     connect(diffBtn, &QPushButton::clicked, this, &::CSettings::toggleDifficulty);
 
     QPushButton *btnBack = new QPushButton("Powrót");
-    connect(btnBack, &QPushButton::clicked, m_window.getMenu(), &CMenu::goMenu);
+    connect(btnBack, &QPushButton::clicked, this, &CSettings::goMenu);
 
     diffBtn->setFixedHeight(60);
     btnBack->setFixedHeight(60);
@@ -53,4 +53,9 @@ void CSettings::toggleDifficulty()
         currentDiff = easy;
         diffBtn->setText("Poziom: ŁATWY");
     }
+}
+
+void CSettings::goMenu()
+{
+    m_window.getStackedWidget()->setCurrentIndex(0);
 }

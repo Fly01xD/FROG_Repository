@@ -4,7 +4,7 @@
 #include "CObserver.h"
 
 CRoad::CRoad(gameDifficulty _diff, CObserver* _obs)
-    : Distance(100), State(paused), observer(_obs)
+    : Distance(100), State(paused), observer(_obs), logicTimer(QTimer(this))
 {
     // ustawianie liczby HP dla poziomów trudnośći
     // (poziom trudności i początkowa liczba HP jest tożsama+1

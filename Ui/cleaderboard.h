@@ -15,6 +15,7 @@ public:
     //metoda odświerzenia leaderboardu po kliknięciu przycisku oraz otwierania
     //widgetu setupLeaderboard czyli otwierania leaderboardu
     void showLeaderboard();
+    void goMenu();
 private:
     MainWindow &m_window;
     QLabel *scoreLabels[3];

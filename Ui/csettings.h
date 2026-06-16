@@ -18,6 +18,8 @@ public:
 
     //metoda która zmienia poziom trudności za pomocą przycisku
     void toggleDifficulty();
+
+    void goMenu();
 private:
     MainWindow &m_window;
     QPushButton *diffBtn;

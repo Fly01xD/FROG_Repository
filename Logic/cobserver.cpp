@@ -4,10 +4,7 @@
 
 CObserver::CObserver(GameScene *_scene, CPlay *_play)
     : sGame(_scene), playScreen(_play)
-{
-    // ustawiam dostęp dla CPlay do observera
-    playScreen->setObserver(this);
-}
+{}
 
 CObserver::~CObserver()
 {}

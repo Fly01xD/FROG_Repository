@@ -5,6 +5,8 @@
 #include <QGraphicsView>
 #include "gameview.h"
 class CGame;
+class GameScene;
+class CObserver;
 
 class MainWindow;
 
@@ -15,7 +17,6 @@ public:
     ~CPlay();
     //metoda odpowiedzialna za stworzenie graficzne
     void setupGameView(CGame *_game);
-    void setObserver(CObserver* _obs) {observer = _obs;}
 
     //metoda
     void startUser();
@@ -25,10 +26,9 @@ public:
     void unPause();
 private:
     MainWindow &m_window;
-    GameView *gView;
+    QGraphicsView *gView;
     GameScene *sGame;
     CGame* game;
-    CObserver* observer;
 };
 
 #endif // CPLAY_H

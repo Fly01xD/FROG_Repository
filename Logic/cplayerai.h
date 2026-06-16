@@ -6,9 +6,8 @@
 #include <QTimer>
 #include <random>
 
-class CPlayerAI : public CPlayerBase, public QObject
+class CPlayerAI : public CPlayerBase
 {
-    Q_OBJECT
 private:
     QTimer checkTimer;
     // nie ma timera na reakcje bo może być dynamiczny
@@ -24,14 +23,15 @@ public:
     ~CPlayerAI();
 
     void jumpOnKey() override;
-    void jumpOnCalc() override;
 
     void playerAIPause() override;
 
     unsigned n = getN();
-private slots:
+
     bool calculate(); // decyzja o skakaniu dlatego bool
     // 1 - skacze, 0 - stoi
+private slots:
+    void jumpOnCalc() override;
 };
 
 #endif // CPLAYERAI_H

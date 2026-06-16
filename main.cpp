@@ -9,5 +9,5 @@ int main(int argc, char *argv[])
     CGame g; // - kontener na grę
     MainWindow w(nullptr, &g);
     w.show();
-    return QCoreApplication::exec();
+    return a.exec();
 }

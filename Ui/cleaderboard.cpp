@@ -30,7 +30,7 @@ void CLeaderboard::setupLeaderboard()
 
     //Przycisk powrotu do menu
     QPushButton *btnBack = new QPushButton("Powrót");
-    connect(btnBack, &QPushButton::clicked, m_window.getMenu(), &CMenu::goMenu);
+    connect(btnBack, &QPushButton::clicked, this, &CLeaderboard::goMenu);
 
     btnBack->setFixedHeight(60);
     layout->addWidget(btnBack);
@@ -38,7 +38,7 @@ void CLeaderboard::setupLeaderboard()
 }
 void CLeaderboard::showLeaderboard()
 {
-    int T[3];
+    int T[3] = {0, 0 ,0 };
     CReader reader;
     reader.ReadScore(T);
 
@@ -48,4 +48,9 @@ void CLeaderboard::showLeaderboard()
 
     //po wciśnięciu przycisku stos wybiera okno 1 czyli leaderboard
     m_window.getStackedWidget()->setCurrentIndex(1);
+}
+
+void CLeaderboard::goMenu()
+{
+    m_window.getStackedWidget()->setCurrentIndex(0);
 }

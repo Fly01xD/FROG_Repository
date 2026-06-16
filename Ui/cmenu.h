@@ -13,11 +13,12 @@ public:
     //metoda wizualnego tworzenia funkcji
     void setupMenu();
 
-    //metoda która pozwala wrócić nam do menu
-    void goMenu();
-
 private:
     MainWindow &m_window;
+
+public slots:
+    //metoda która pozwala wrócić nam do menu
+    void goMenu();
 };
 
 #endif // CMENU_H

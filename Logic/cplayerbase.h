@@ -1,10 +1,14 @@
 #ifndef CPLAYERBASE_H
 #define CPLAYERBASE_H
 
+#include <qobject.h>
+
 class CRoad;
 
-class CPlayerBase
+class CPlayerBase : public QObject
 {
+    Q_OBJECT
+private:
     CRoad* logicRoad;
     unsigned n; // n jest zmienną do liczenia przestrzeni
     // na których żaba była, robi to dla AI i CRoad za oczy żeby

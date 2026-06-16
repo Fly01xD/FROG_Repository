@@ -118,6 +118,7 @@ void GameScene::synchLogic(gameDifficulty _diff)
             frogItem = frogI;
         }
     }
+    update();
 }
 //update silnika
 void GameScene::drawGame()
@@ -141,8 +142,9 @@ void GameScene::drawGame()
             }
         }
     }
+    update();
 }
-
+// skakanie żaby
 void GameScene::moveGame()
 {
     qreal screenH = sceneRect().height();
@@ -247,6 +249,7 @@ void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
         frogItem->setPos(frogFixedX, frogFixedY);
     }
 }
+
 void GameScene::unPauseAI()
 {
     player->playerAIPause();
@@ -264,6 +267,7 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         logicRoad->gamePause();
         player->playerAIPause();
     }
+    QGraphicsScene::keyPressEvent(event);
 }
 
 

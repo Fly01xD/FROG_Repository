@@ -2,11 +2,9 @@
 #define GAMEVIEW_H
 
 #include <qgraphicsview.h>
-#include <userscene.h>
 
 class GameView : public QGraphicsView
 {
-
 public:
     GameView(QWidget* parent);
     ~GameView();

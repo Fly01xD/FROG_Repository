@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include <QVBoxLayout>
 #include "cgame.h"
+#include "GameScene.h"
 
 class CPlayerBase;
 
@@ -18,7 +19,7 @@ CPlay::~CPlay()
 
 void CPlay::setupGameView(CGame* _game)
 {
-    gView = new GameView(this);
+    gView = new QGraphicsView(this);
     game = _game;
 }
 
@@ -73,6 +74,7 @@ void CPlay::frogDied()
 {
     delete sGame;
     sGame = nullptr;
+    game->newRoad();
     m_window.getStackedWidget()->setCurrentIndex(0);
 }
 
