@@ -2,7 +2,7 @@
 #include <random>
 
 CLane::CLane(int _distance, vehDirection _dir)
-    : Distance(_distance), Direction(_dir)
+    : Distance(_distance), Direction(_dir), Crossing(new CCrossing)
 {}
 
 CLane::~CLane()

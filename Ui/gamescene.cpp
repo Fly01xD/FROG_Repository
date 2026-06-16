@@ -97,7 +97,7 @@ void GameScene::synchLogic(gameDifficulty _diff)
             addItem(vehI);
             vehicleItems.push_back(vehI);
             // jeszcze trzeba napisać rozmieszczenie pojazdóW
-            vehI->setX(v->/*tu trzeba wpisać coś co będzie podawało pozycje samochodu z logiki chyba observer*/());
+            vehI->setX(v->());/*tu trzeba wpisać coś co będzie podawało pozycje samochodu z logiki chyba observer*/
         }
         currentRowIndex++;
     }
