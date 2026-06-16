@@ -98,3 +98,25 @@ void CPlay::unPause()
 {
     m_window.getStackedWidget()->setCurrentIndex(3);
 }
+
+void CPlay::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+    if (sGame) {
+        // Gra wczyta się w idealnych proporcjach zaraz po tym jak aplikacja zostanie narysowana na ekranie
+        sGame->updateScaling(width(), height());
+        gView->fitInView(sGame->sceneRect(), Qt::IgnoreAspectRatio);
+    }
+}
+
+void CPlay::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    if (gView && gView->scene())
+    {
+        sGame->updateScaling(width(), height());
+
+        gView->fitInView(gView->scene()->sceneRect(), Qt::IgnoreAspectRatio);
+    }
+}
