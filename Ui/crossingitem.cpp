@@ -1,6 +1,6 @@
 #include "crossingitem.h"
 
-CrossingItem::CrossingItem(QGraphicsItem* parent, CCrossing* _cros)
+CrossingItem::CrossingItem(CCrossing* _cros, QGraphicsPixmapItem* parent)
     : logicCrossing(_cros), QGraphicsPixmapItem(parent)
 {
     QPixmap pixmap("assets/crossing.png");
