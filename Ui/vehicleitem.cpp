@@ -38,6 +38,7 @@ VehicleItem::VehicleItem(CVehicle *_veh, EVehicleType type, QGraphicsItem *paren
     //wczytujemy tą grafike do sceny
     QPixmap pix(chosenPath);
     setPixmap(pix);
+    setTransformOriginPoint(pixmap().width()/2, pixmap().height()/2);
     //ustawiamy wysokość samochodu na najwyższą
     setZValue(3); // żaba jest z = 2
 }

@@ -21,6 +21,12 @@ void CPlay::setupGameView(CGame* _game)
 {
     gView = new QGraphicsView(this);
     game = _game;
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gView);
+
+    gView->setRenderHint(QPainter::Antialiasing);
 }
 
 void CPlay::startUser()
@@ -31,9 +37,14 @@ void CPlay::startUser()
         //po przegranej albo po odpaleniu aplikacji
         sGame = new GameScene (this,game->getRoad(),
                               m_window.getDifficulty(),
-                              game->beginGame());
+                              game->beginGame(), width(), height());
         game->setObserverSceneAndScreen(sGame, this); // tworzenie obserwatora
-        //ustawienie kamery na nową planszę
+        // TUTAJ ZACZYNAJĄ SIĘ EKSPERYMENTY
+        /*gView->setScene(sGame);
+        gView->setSceneRect(gView->viewport()->rect()); // do ustawieniapełnego okna
+        sGame->synchLogic(m_window.getDifficulty());*/
+        // TUTAJ KOŃCZĄ SIĘ EKPERYMENTY
+
         gView->setScene(sGame);
 
         //po wciśnięci przycisku graj stos wybiera okno 3 czyli
@@ -55,7 +66,7 @@ void CPlay::startAI()
     {
         sGame = new GameScene (this,game->getRoad(),
                               m_window.getDifficulty(),
-                              game->beginGameAI());
+                              game->beginGameAI(), width(), height());
         game->setObserverSceneAndScreen(sGame,this);
         gView->setScene(sGame);
         m_window.getStackedWidget()->setCurrentIndex(3);

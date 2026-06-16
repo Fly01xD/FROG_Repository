@@ -12,6 +12,8 @@ class CPlayerBase;
 
 class GameScene : public QGraphicsScene
 {
+    Q_OBJECT
+private:
     // logika sceny
     CRoad* logicRoad;
 
@@ -25,7 +27,8 @@ class GameScene : public QGraphicsScene
     CPlayerBase* player; // gadanie z graczem
     FrogItem* frogItem;    //wskaźnik na postać gracza
 public:
-    GameScene(QObject* parent,CRoad* _road ,gameDifficulty _diff, CPlayerBase* _player);
+    GameScene(QObject* parent,CRoad* _road ,gameDifficulty _diff,
+              CPlayerBase* _player, qreal _windWidth, qreal _windHeight);
     ~GameScene();
 
     // synchronizacja logiki z ui
@@ -56,7 +59,6 @@ public:
 
     // skakanie żaby dla czlowieka
     void keyPressEvent(QKeyEvent* event) override;
-
 };
 
 #endif // GAMESCENE_H

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QGraphicsView>
-#include "gameview.h"
+//#include "gameview.h"
 class CGame;
 class GameScene;
 class CObserver;

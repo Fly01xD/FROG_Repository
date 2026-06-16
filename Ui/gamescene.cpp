@@ -6,10 +6,13 @@
 
 #include <QKeyEvent>
 
-GameScene::GameScene(QObject* parent, CRoad* _road, gameDifficulty _diff, CPlayerBase *_player)
+GameScene::GameScene(QObject* parent, CRoad* _road, gameDifficulty _diff,
+                     CPlayerBase *_player, qreal _windWidth, qreal _windHeight)
     : QGraphicsScene(parent), logicRoad(_road), player(_player)
 {
+    setSceneRect(0, 0, _windWidth, _windHeight);
     synchLogic(_diff);
+    updateScaling(_windWidth, _windHeight);
 }
 
 GameScene::~GameScene()
