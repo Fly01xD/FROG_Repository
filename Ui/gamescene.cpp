@@ -189,6 +189,14 @@ void GameScene::moveGame()
             CLane* newLogicLane = logicRoad->getLanes().back();
             lane->setLogicLane(newLogicLane);
 
+            //usunięcie wskaźników usuwanych samochodów z VehicleItem
+            for (auto child : lane->childItems())
+            {
+                if (VehicleItem* vehI = dynamic_cast<VehicleItem*>(child))
+                {
+                    vehicleItems.erase(std::remove(vehicleItems.begin(), vehicleItems.end(), vehI), vehicleItems.end());
+                }
+            }
             //usunięcie wszystkich dzieci lane'a
             qDeleteAll(lane->childItems());
 
@@ -198,7 +206,8 @@ void GameScene::moveGame()
             if (newLogicLane->Crossing)
             {
                 CrossingItem* crosI = new CrossingItem(newLogicLane->Crossing, lane);
-                crosI->setPos((laneW/2.0), 0);
+                qreal crossingW = crosI->pixmap().isNull() ? 0 : crosI->pixmap().width();
+                crosI->setPos((laneW / 2.0) - (crossingW / 2.0), 0);
             }
             for(auto v : newLogicLane->getVehicles())
             {
@@ -275,47 +284,46 @@ void GameScene::despawnVehicle(std::vector<CVehicle*> _target) // możliwe że n
 
 void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
 {
+    //zapisujemy wielkość rzędu przed zmianąskalowania, żeby móc zlokalizować pasy
+    qreal oldRowHeight = sceneRect().height() / 4.0;
+    if (oldRowHeight <= 0) oldRowHeight = windowHeight / 4.0;
     //ustawiamy prostokąt sceny pasujący do okna
     setSceneRect(0,0,windowWidth,windowHeight);
     //dzielimy wysokość całego obecnie ekranu na 4 i tak dostajemy
     //wysokość jednego rzędu
     qreal rowHeight = windowHeight/4.0;
 
-    int index = 0;
     //skalowanie pasów, ponieważ pas jest parentem pojazdów i crossingów
     //to pojazdy i crossingi odrazu są skalowane
     for (LaneItem* lane : laneItems)
     {
-        lane->setPos(0, index * rowHeight);
         if (lane && !lane->pixmap().isNull())
         {
-            lane->setPos(0, index * rowHeight);
+            int rowIndex = qRound(lane->y() / oldRowHeight);
+            lane->setPos(0, rowIndex * rowHeight);
 
-            // Skalujemy pas tak, by wypełnił całą szerokość ekranu i pełną wysokość rzędu
+            //skalujemy pas tak żeby wypełniał pełny rozmiar ekranu
             qreal scaleX = windowWidth / lane->pixmap().width();
             qreal scaleY = rowHeight / lane->pixmap().height();
             lane->setTransform(QTransform::fromScale(scaleX, scaleY));
         }
-        index++;
     }
     //skalowanie wyspy (działa tak samo jak wyżej)
     for (IslandItem* island : islandItems)
     {
         if (island && !island->pixmap().isNull())
         {
-            // Skalujemy wyspę analogicznie do pasów
-            island->setPos(0, index * rowHeight);
+            int rowIndex = qRound(island->y() / oldRowHeight);
+            island->setPos(0, rowIndex * rowHeight);
 
             qreal scaleX = windowWidth / island->pixmap().width();
             qreal scaleY = rowHeight / island->pixmap().height();
             island->setTransform(QTransform::fromScale(scaleX, scaleY));
         }
-        index++;
     }
     //skalowanie żaby
     if (frogItem && !frogItem->pixmap().isNull())
     {
-        frogItem->setPos(0,index*rowHeight);
         qreal frogSize = rowHeight * 0.6;
         qreal scaleXY = frogSize / frogItem->pixmap().width();
         frogItem->setTransform(QTransform::fromScale(scaleXY, scaleXY));
@@ -330,6 +338,7 @@ void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
 
         frogItem->setPos(frogFixedX, frogFixedY);
     }
+    update();
 }
 
 void GameScene::unPauseAI()
@@ -343,6 +352,7 @@ void GameScene::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_Space)
     {
         player->jumpOnKey();
+        moveGame();
     }
     if(event->key() == Qt::Key_Escape)
     {
