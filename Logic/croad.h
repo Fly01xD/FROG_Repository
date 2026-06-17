@@ -46,7 +46,7 @@ public:
     void gameBegin();
     void gamePause();
 
-    roadInfrastructure jump(unsigned &_njump);
+    void jump(unsigned &_njump);
 
     //gettery settery
     std::vector<CLane*> getLanes();

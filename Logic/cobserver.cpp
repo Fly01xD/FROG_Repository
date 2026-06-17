@@ -42,3 +42,13 @@ void CObserver::informScreenEnd()
     playScreen->frogDied();
 
 }
+
+void CObserver::informSceneSpawned(CLane* _lane)
+{
+    sGame->spawnVehicle(_lane);
+}
+
+void CObserver::informSceneDespawned(std::vector<CVehicle*> _target)
+{
+    sGame->despawnVehicle(_target);
+}

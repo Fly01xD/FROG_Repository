@@ -49,8 +49,11 @@ void CRoad::updateGame() // rysowanie dla samochodóW
         // ruch pojazdów
         for(auto l : Lanes)
         {
-            l->update(logicTimer.interval());
-            l->spawnVehicle();
+            std::vector<CVehicle*> toDelete = l->update(logicTimer.interval());
+            if(!(toDelete.empty()))
+                observer->informSceneDespawned(toDelete);
+            if(l->spawnVehicle())
+                observer->informSceneSpawned(l);
         }
         observer->informSceneDraw();
 
@@ -104,7 +107,7 @@ void CRoad::gamePause()
 
 //  logika jest taka, że żaba może być tylko na wyspie
 //  lub pasie o indeksie 0 w tablicy
-roadInfrastructure CRoad::jump(unsigned &_njump)
+void CRoad::jump(unsigned &_njump)
 {
     if(State == running)
     {
@@ -123,7 +126,6 @@ roadInfrastructure CRoad::jump(unsigned &_njump)
         // dodaje punkt
         Lanes[0]->Crossing->getFrog()->addPoint();
         // wysyłam sygnał, że chcę dodać do ui drogi wyspę
-        return roadInfrastructure::island;
     }
     // kiedy żaba na przejściu, a przed nią jest wyspa
     else if(Lanes[0]->Crossing->getFrog() && _njump == Lanes.size())
@@ -140,7 +142,6 @@ roadInfrastructure CRoad::jump(unsigned &_njump)
         // dodaje punkt
         Islands[0]->getFrog()->addPoint();
         // wysyłam sygnał, że chcę dodać do ui drogi pas ruchu
-        return roadInfrastructure::lane;
     }
     // kiedy żaba na przejściu a przed nią przejśice
     else if(Lanes[0]->Crossing->getFrog() && _njump < Lanes.size())
@@ -157,7 +158,6 @@ roadInfrastructure CRoad::jump(unsigned &_njump)
         // dodaje punkt
         Lanes[0]->Crossing->getFrog()->addPoint();
         // wysyłam sygnał, że chcę dodać do ui drogi pas ruchu
-        return roadInfrastructure::lane;
     }
     }
     observer->informSceneMove(); // BARDZO WAŻNE INFORMUJE ZE ŻABA SKOCZYŁA

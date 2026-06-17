@@ -25,12 +25,12 @@ public:
     // metody do dodawania pojazdu
     void addVehicle(CCar* car);
     void addVehicle(CMotor* motor);
-    void spawnVehicle();
+    bool spawnVehicle();
     void despawnVehicle(CVehicle* target);
 
     // metoda do wywołania ruchu pojazdu i
     // sprawdzenie czy pojazd wjechal na przejscie
-    void update(double _time);
+    std::vector<CVehicle *> update(double _time); // jest bool 1 - samochód usuniety, 0 nie susuniety
 
     // getterki setterki
     std::vector<CVehicle*> getVehicles();

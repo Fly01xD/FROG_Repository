@@ -46,6 +46,7 @@ void CPlay::startUser()
         // TUTAJ KOŃCZĄ SIĘ EKPERYMENTY
 
         gView->setScene(sGame);
+        game->getRoad()->gameBegin();
 
         //po wciśnięci przycisku graj stos wybiera okno 3 czyli
         //główne okno gry
@@ -69,6 +70,7 @@ void CPlay::startAI()
                               game->beginGameAI(), width(), height());
         game->setObserverSceneAndScreen(sGame,this);
         gView->setScene(sGame);
+        game->getRoad()->gameBegin();
         m_window.getStackedWidget()->setCurrentIndex(3);
     }
     else

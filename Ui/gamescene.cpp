@@ -53,6 +53,7 @@ void GameScene::synchLogic(gameDifficulty _diff)
     clear();
     laneItems.clear();
     islandItems.clear();
+    vehicleItems.clear();
     frogItem = nullptr;
 
     //zbieramy wyspy i pasy
@@ -95,11 +96,13 @@ void GameScene::synchLogic(gameDifficulty _diff)
                 //oraz usuwał razem z lanem
                 VehicleItem* vehI = new VehicleItem(v, EVehicleType::Car, laneI);
                 vehI->setX((v->getPosition()/200.0)*laneW);
+                vehicleItems.push_back(vehI); // to dodałem
             }
             else if(dynamic_cast<CMotor*>(v))
             {
                 VehicleItem* vehI = new VehicleItem(v, EVehicleType::Motorcycle, laneI);
                 vehI->setX((v->getPosition()/200.0)*laneW);
+                vehicleItems.push_back(vehI); // to dodałem
             }
         }
         currentRowIndex++;
@@ -134,6 +137,7 @@ void GameScene::synchLogic(gameDifficulty _diff)
 }
 void GameScene::drawGame()
 {
+    std::vector<VehicleItem*> toDelete; // kontener na pojazdy do usuniecia
     //przechodzimy przez każdy pas
     for (LaneItem* lane : laneItems)
     {
@@ -148,10 +152,20 @@ void GameScene::drawGame()
                 //aktualizacja pozycji samochodu zgodna z logiką
                 CVehicle* logic = visVehicle->getLogicVehicle();
                 if (logic) {
-                    visVehicle->setX((logic->getPosition() / 200.0) * laneW);
+                    if (visVehicle->scene() != nullptr)
+                        visVehicle->setX((logic->getPosition() / 200.0) * laneW);
                 }
+                else
+                    toDelete.push_back(visVehicle);
             }
         }
+    }
+    for(auto v : toDelete)
+    {
+        vehicleItems.erase(
+            std::remove(vehicleItems.begin(), vehicleItems.end(),
+                        v), vehicleItems.end());
+        delete v;
     }
     update();
 }
@@ -192,11 +206,13 @@ void GameScene::moveGame()
                 {
                     VehicleItem* vehI = new VehicleItem(v, EVehicleType::Car, lane);
                     vehI->setX((v->getPosition()/200.0)*laneW);
+                    vehicleItems.push_back(vehI);// TO DODAŁEM
                 }
                 else if(dynamic_cast<CMotor*>(v))
                 {
                     VehicleItem* vehI = new VehicleItem(v, EVehicleType::Motorcycle, lane);
                     vehI->setX((v->getPosition()/200.0)*laneW);
+                    vehicleItems.push_back(vehI);// TO DODAŁEM
                 }
             }
         }
@@ -215,6 +231,48 @@ void GameScene::moveGame()
     }
     update();
 }
+
+void GameScene::spawnVehicle(CLane* _lane)
+{
+    LaneItem* target = nullptr;
+    for(auto laneI : laneItems)
+    {
+        if(laneI->getLogicLane() == _lane)
+            target = laneI;
+    }
+    if(target)
+    {
+        CVehicle* veh = _lane->getVehicles()[_lane->getVehicles().size()-1];
+        // qt świruje z tym błędem że veh nigdy nie jest odczytany
+        qreal laneW = target->pixmap().width();
+        if(dynamic_cast<CCar*>(veh))
+        {
+            VehicleItem* vehI = new VehicleItem(veh, EVehicleType::Car, target);
+            vehI->setX((veh->getPosition()/200.0)*laneW);
+            vehicleItems.push_back(vehI); // TO DODAŁEM
+        }
+        else if(dynamic_cast<CMotor*>(veh))
+        {
+            VehicleItem* vehI = new VehicleItem(veh, EVehicleType::Motorcycle, target);
+            vehI->setX((veh->getPosition()/200.0)*laneW);
+            vehicleItems.push_back(vehI); // TO DODAŁEM
+        }
+    }
+    update();
+}
+
+void GameScene::despawnVehicle(std::vector<CVehicle*> _target) // możliwe że nie potrzebne // jednak potzrebne
+{
+    for(auto logicV : _target)
+    {
+        for(auto visV : vehicleItems)
+        {
+            if(visV->getLogicVehicle() == logicV)
+                visV->setLogicVehicle(nullptr);
+        }
+    }
+}
+
 void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
 {
     //ustawiamy prostokąt sceny pasujący do okna

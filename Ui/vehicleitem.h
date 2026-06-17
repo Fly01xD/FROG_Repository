@@ -18,6 +18,7 @@ class VehicleItem : public QGraphicsPixmapItem
 public:
     VehicleItem(CVehicle* _veh, EVehicleType type, QGraphicsItem* parent = nullptr);
     CVehicle* getLogicVehicle() const { return logicVehicle; }
+    void setLogicVehicle(CVehicle* _v) {logicVehicle = _v;}
 };
 
 #endif // VEHICLEITEM_H

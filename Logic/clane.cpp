@@ -22,31 +22,35 @@ void CLane::addVehicle(CCar* car)
     Vehicles.push_back(car);
 }
 
-void CLane::spawnVehicle()
+bool CLane::spawnVehicle()
 {
     // segment losowania:
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::uniform_int_distribution<int> n(0,1); //który pojazd zrespić
-    std::uniform_int_distribution<int> prob(1,4);
+    std::uniform_int_distribution<int> prob(1,4); // czy zrespić pojazd
     if(prob(gen) == 1)
     {
         if(n(gen) == 0)
             addVehicle(new CCar(Direction));
         else
             addVehicle(new CMotor(Direction));
+        return true;
     }
+    else
+        return false;
 }
 
 // metoda do wywołania ruchu pojazdu i
 // sprawdzenie czy pojazd wjechal na przejscie
-void CLane::update(double _time)
+std::vector<CVehicle*> CLane::update(double _time)
 {
+    std::vector<CVehicle*> toDelete;
     for(auto v = Vehicles.begin(); v != Vehicles.end();) {
         // jeśli pojazd już przejechał przez przejście
         // to po prostu jedzie
         if((*v)->getState() == vehState::harmless)
-            (*v)->move(_time);
+        (*v)->move(_time);
         // jeśli pojazd nie przejechał przez przejście
         // to wywoływana jest inna metoda
         else
@@ -63,12 +67,14 @@ void CLane::update(double _time)
         // teraz należy usunąć te pojazdy co wyjechały poza planszę
         if((*v)->getPosition()/double(Distance) >=2)
         {
+            toDelete.push_back(*v);
             delete *v;
             v = Vehicles.erase(v);
         }
         else
             ++v;
     }
+    return toDelete;
 }
 
 // gettery settery

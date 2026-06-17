@@ -37,6 +37,9 @@ public:
     void drawGame();
     // przesunięcie (iluzja) żaby
     void moveGame();
+    // metoda do wstawiania nowych itemów pojazdów
+    void spawnVehicle(CLane* _lane);
+    void despawnVehicle(std::vector<CVehicle *> _target);
     //metoda ustawiająca wymiary i pozycje na scenie
     void updateScaling(qreal windowWidth, qreal windowHeight);
 
