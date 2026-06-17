@@ -9,7 +9,7 @@ CWriter::CWriter(GameData *_data) : MyData(_data)
 
 void CWriter::SaveScore(GameData *_data)
 {
-    int Score[3];
+    int Score[3] = {0,0,0};
 
     //wczytanie danych z pliku z poprzednimi najlepszymi wynikami
     CReader reader;
