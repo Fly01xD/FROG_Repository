@@ -4,15 +4,20 @@
 #include "CObserver.h"
 
 CRoad::CRoad(gameDifficulty _diff, CObserver* _obs)
-    : Distance(100), State(paused), observer(_obs), logicTimer(QTimer(this))
+    : Distance(170), State(paused), observer(_obs), logicTimer(QTimer(this))
 {
     // ustawianie liczby HP dla poziomów trudnośći
     // (poziom trudności i początkowa liczba HP jest tożsama+1
-    Difficulty = _diff+1;
+    if(_diff == gameDifficulty::easy)
+        Difficulty = 3;
+    else if(_diff == gameDifficulty::medium)
+        Difficulty = 2;
+    else
+        Difficulty = 1;
 
     // ustwawianie QTimera pzdr
     logicTimer.setSingleShot(false);
-    logicTimer.setInterval(500);
+    logicTimer.setInterval(100);
     connect(&logicTimer, &QTimer::timeout,
             this, &::CRoad::updateGame);
 
@@ -55,9 +60,9 @@ void CRoad::updateGame() // rysowanie dla samochodóW
             if(l->spawnVehicle())
                 observer->informSceneSpawned(l);
         }
-        observer->informSceneDraw();
+        observer->informSceneDraw(Frog->getHP());
 
-        if(Frog->getState() == frogState::dead)
+        if(Frog->getHP() <= 0) // TUTAJ ZMIENIŁEM Z: Frog->getState() == frogState::dead
         {
             gameEnd();
         }
@@ -125,7 +130,6 @@ void CRoad::jump(unsigned &_njump)
         Islands.push_back(new CIsland);
         // dodaje punkt
         Lanes[0]->Crossing->getFrog()->addPoint();
-        // wysyłam sygnał, że chcę dodać do ui drogi wyspę
     }
     // kiedy żaba na przejściu, a przed nią jest wyspa
     else if(Lanes[0]->Crossing->getFrog() && _njump == Lanes.size())
@@ -141,7 +145,6 @@ void CRoad::jump(unsigned &_njump)
         Lanes.push_back(new CLane(Distance, down));
         // dodaje punkt
         Islands[0]->getFrog()->addPoint();
-        // wysyłam sygnał, że chcę dodać do ui drogi pas ruchu
     }
     // kiedy żaba na przejściu a przed nią przejśice
     else if(Lanes[0]->Crossing->getFrog() && _njump < Lanes.size())
@@ -160,9 +163,28 @@ void CRoad::jump(unsigned &_njump)
         // wysyłam sygnał, że chcę dodać do ui drogi pas ruchu
     }
     }
-    observer->informSceneMove(); // BARDZO WAŻNE INFORMUJE ZE ŻABA SKOCZYŁA
+    observer->informSceneMove(Frog->getPoints()); // BARDZO WAŻNE INFORMUJE ZE ŻABA SKOCZYŁA
 }
 
 std::vector<CLane *> CRoad::getLanes()  {return Lanes;}
 
 std::vector<CIsland *> CRoad::getIslands()  {return Islands;}
+
+void CRoad::setDifficulty(gameDifficulty _diff)
+{
+    if(_diff == gameDifficulty::easy)
+    {
+        Difficulty = 3;
+        Frog->setHP(Difficulty);
+    }
+    else if(_diff == gameDifficulty::medium)
+    {
+        Difficulty = 2;
+        Frog->setHP(Difficulty);
+    }
+    else
+    {
+        Difficulty = 1;
+        Frog->setHP(Difficulty);
+    }
+}

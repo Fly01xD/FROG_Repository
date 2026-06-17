@@ -10,6 +10,7 @@ GameScene::GameScene(QObject* parent, CRoad* _road, gameDifficulty _diff,
                      CPlayerBase *_player, qreal _windWidth, qreal _windHeight)
     : QGraphicsScene(parent), logicRoad(_road), player(_player)
 {
+    logicRoad->setDifficulty(_diff);
     setSceneRect(0, 0, _windWidth, _windHeight);
     synchLogic(_diff);
     updateScaling(_windWidth, _windHeight);
@@ -19,32 +20,8 @@ GameScene::~GameScene()
 {
     //metoda w QGraphicsScene, która niszczy wszystko
     clear();
-
-    //kod który był wcześniej (jakbyś uznał, że wolisz poprzednią wersję):
-
-    // usuwanie dzieci, pasy i samochody
-    // for(auto l : laneItems)
-    // {
-    //     for(auto c : l->childItems()) {
-    //         removeItem(c);
-    //         delete c;
-    //     }
-    //     laneItems.erase(laneItems.begin());
-    //     removeItem(l);
-    //     delete l;
-    // }
-    // // usuwanie dzieci, wyspy i żaba
-    // for(auto i : islandItems)
-    // {
-    //     for(auto c : i->childItems()) {
-    //         removeItem(c);
-    //         delete c;
-    //     }
-    //     islandItems.erase(islandItems.begin());
-    //     removeItem(i);
-    //     delete i;
-    // }
 }
+
 // metoda do podłączenia ItemóW graficznych do klas logicznych
 // oraz dodania ich na scenę i zrobienie rodziecielstwa
 void GameScene::synchLogic(gameDifficulty _diff)
@@ -55,6 +32,10 @@ void GameScene::synchLogic(gameDifficulty _diff)
     islandItems.clear();
     vehicleItems.clear();
     frogItem = nullptr;
+    scoreRect = nullptr;
+    scoreText = nullptr;
+    hpRect    = nullptr;
+    hpText    = nullptr;
 
     //zbieramy wyspy i pasy
     std::vector<CLane*> logicLanes = logicRoad->getLanes();
@@ -133,9 +114,57 @@ void GameScene::synchLogic(gameDifficulty _diff)
         }
         currentRowIndex++;
     }
+    setupScoreHpDisplay();
     update();
 }
-void GameScene::drawGame()
+
+void GameScene::setupScoreHpDisplay()
+{
+    scoreRect = new QGraphicsRectItem(5, 5, 120, 35);
+    scoreRect->setBrush(QBrush(QColor(255, 140, 0))); // pomarańczowy
+    scoreRect->setPen(QPen(QColor(200, 100, 0), 2)); // ramka
+    scoreRect->setZValue(5); // zawsze na wierzchu
+    addItem(scoreRect);
+
+    // Tekst z punktami
+    scoreText = new QGraphicsTextItem(scoreRect);
+    scoreText->setFont(QFont("Arial", 14, QFont::Bold));
+    scoreText->setDefaultTextColor(Qt::white);
+    scoreText->setPos(8, 4);
+    scoreText->setZValue(6);
+
+    // Pierwsze wypełnienie danymi
+    updateScore(0);
+
+    // trzeba jeszcze hp:
+    double x = sceneRect().width() - 80 - 5;
+    double y = 5;
+    hpRect = new QGraphicsRectItem(x, y, 80, 35);
+    hpRect->setBrush(QBrush(QColor(200, 0, 0))); // czerwony
+    hpRect->setPen(QPen(QColor(140, 0, 0), 2)); // ramka
+    hpRect->setZValue(5);
+    addItem(hpRect);
+
+    hpText = new QGraphicsTextItem(hpRect);
+    hpText->setFont(QFont("Arial", 14, QFont::Bold));
+    hpText->setDefaultTextColor(Qt::white);
+    hpText->setPos(8, 4);
+    hpText->setZValue(6);
+
+    updateHp(logicRoad->getDifficulty());
+}
+// poniżej metody do updateu liczydeł
+void GameScene::updateScore(int _points)
+{
+    scoreText->setPlainText(QString("Punkty: %1").arg(_points));
+}
+void GameScene::updateHp(int _hp)
+{
+    hpText->setPlainText(QString("HP: %1").arg(_hp));
+}
+
+// metoda do rysowania ruchu pojazdów
+void GameScene::drawGame(int _hp)
 {
     std::vector<VehicleItem*> toDelete; // kontener na pojazdy do usuniecia
     //przechodzimy przez każdy pas
@@ -167,10 +196,11 @@ void GameScene::drawGame()
                         v), vehicleItems.end());
         delete v;
     }
+    updateHp(_hp);
     update();
 }
 // skakanie żaby
-void GameScene::moveGame()
+void GameScene::moveGame(int _points)
 {
     qreal screenH = sceneRect().height();
     qreal rowHeight = screenH / 4.0; // Wysokość jednego rzędu
@@ -238,6 +268,9 @@ void GameScene::moveGame()
             island->setLogicIsland(newLogicIsland);
         }
     }
+
+    // jescze trzeba naryssować punkty
+    updateScore(_points);
     update();
 }
 
@@ -324,7 +357,7 @@ void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
     //skalowanie żaby
     if (frogItem && !frogItem->pixmap().isNull())
     {
-        qreal frogSize = rowHeight * 0.6;
+        qreal frogSize = rowHeight * 0.3;
         qreal scaleXY = frogSize / frogItem->pixmap().width();
         frogItem->setTransform(QTransform::fromScale(scaleXY, scaleXY));
 
@@ -338,6 +371,14 @@ void GameScene::updateScaling(qreal windowWidth, qreal windowHeight)
 
         frogItem->setPos(frogFixedX, frogFixedY);
     }
+    // przesuwanie prostokąta z hp bo nie dzialalo
+    if (hpRect)
+    {
+        qreal x = windowWidth - 80 - 5;
+        hpRect->setRect(x, 5, 80, 35);
+        hpText->setPos(x + 8, 9);
+    }
+
     update();
 }
 
@@ -352,7 +393,6 @@ void GameScene::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_Space)
     {
         player->jumpOnKey();
-        moveGame();
     }
     if(event->key() == Qt::Key_Escape)
     {

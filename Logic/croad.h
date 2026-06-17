@@ -8,9 +8,9 @@
 #include <QTimer>
 
 enum gameDifficulty {
-    easy,
+    hard,
     medium,
-    hard
+    easy
 };
 
 enum roadInfrastructure {
@@ -51,7 +51,8 @@ public:
     //gettery settery
     std::vector<CLane*> getLanes();
     std::vector<CIsland*> getIslands();
-    void setDifficulty(gameDifficulty _diff) {Difficulty = _diff+1;}
+    void setDifficulty(gameDifficulty _diff);
+    unsigned getDifficulty() {return Difficulty;}
     gameState getState() {return State;}
 private slots:
     void updateGame();

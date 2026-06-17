@@ -26,6 +26,15 @@ private:
 
     CPlayerBase* player; // gadanie z graczem
     FrogItem* frogItem;    //wskaźnik na postać gracza
+
+    // metoda do setup licznika punktów
+    void setupScoreHpDisplay();
+    void updateScore(int _points);
+    void updateHp(int _hp);
+    QGraphicsRectItem*  scoreRect = nullptr;
+    QGraphicsTextItem*  scoreText = nullptr;
+    QGraphicsRectItem*  hpRect = nullptr;
+    QGraphicsTextItem*  hpText = nullptr;
 public:
     GameScene(QObject* parent,CRoad* _road ,gameDifficulty _diff,
               CPlayerBase* _player, qreal _windWidth, qreal _windHeight);
@@ -34,9 +43,9 @@ public:
     // synchronizacja logiki z ui
     void synchLogic(gameDifficulty _diff);
     // krok symulacji gry
-    void drawGame();
+    void drawGame(int _hp);
     // przesunięcie (iluzja) żaby
-    void moveGame();
+    void moveGame(int _points);
     // metoda do wstawiania nowych itemów pojazdów
     void spawnVehicle(CLane* _lane);
     void despawnVehicle(std::vector<CVehicle *> _target);

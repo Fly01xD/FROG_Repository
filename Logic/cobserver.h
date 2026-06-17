@@ -17,8 +17,8 @@ public:
     CObserver(GameScene* _scene,CPlay* _play);
     ~CObserver();
 
-    void informSceneDraw(); // metoda do informowania o ruchu pojazdów
-    void informSceneMove(); // metoda do informowania o skakaniu żaby
+    void informSceneDraw(int _hp); // metoda do informowania o ruchu pojazdów
+    void informSceneMove(int _points); // metoda do informowania o skakaniu żaby
     void informScreenPause(); // metoda do informowania CPlay o pazuie
     void informScreenUnPause(); // metoda do informowania CPlay o końcu pauzy
     void informScreenEnd(); // metoda do informowania o śmierci żaby

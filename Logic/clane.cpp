@@ -28,7 +28,7 @@ bool CLane::spawnVehicle()
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::uniform_int_distribution<int> n(0,1); //który pojazd zrespić
-    std::uniform_int_distribution<int> prob(1,4); // czy zrespić pojazd
+    std::uniform_int_distribution<int> prob(1,20); // czy zrespić pojazd
     if(prob(gen) == 1)
     {
         if(n(gen) == 0)

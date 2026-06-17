@@ -4,9 +4,7 @@
 CCar::CCar(vehDirection _direction)
     :  CVehicle(20.0, _direction)
 {
-    CVehicle::randomSpeed(27.7, 36.0);
+    CVehicle::randomSpeed(41.5, 54.0);
 }
 
-CCar::~CCar() {
-    qDebug() << "CVehicle destroyed at" << this;
-}
+CCar::~CCar() {}

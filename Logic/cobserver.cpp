@@ -9,14 +9,14 @@ CObserver::CObserver(GameScene *_scene, CPlay *_play)
 CObserver::~CObserver()
 {}
 
-void CObserver::informSceneDraw()
+void CObserver::informSceneDraw(int _hp)
 {
-    sGame->drawGame();
+    sGame->drawGame(_hp);
 }
 
-void CObserver::informSceneMove()
+void CObserver::informSceneMove(int _points)
 {
-    sGame->drawGame();
+    sGame->moveGame(_points);
 }
 
 void CObserver::informScreenPause()
@@ -31,7 +31,7 @@ void CObserver::informScreenUnPause()
 
 void CObserver::informScreenEnd()
 {
-    sGame->drawGame(); // powinno się to tym różnić
+    sGame->drawGame(0); // powinno się to tym różnić
     // od zwykłego rysowania, że FrogItem ma inny
     // PNG kiedy jest nieżywy - FrogItem
     // sprawdza czy żaba jest żywa i zmienia PNG.

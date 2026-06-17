@@ -1,6 +1,7 @@
 #include "cplay.h"
 #include "mainwindow.h"
 #include <QVBoxLayout>
+#include <qlabel.h>
 #include "cgame.h"
 #include "GameScene.h"
 
