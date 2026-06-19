@@ -25,7 +25,7 @@ public:
     // metody do dodawania pojazdu
     void addVehicle(CCar* car);
     void addVehicle(CMotor* motor);
-    bool spawnVehicle();
+    CVehicle* spawnVehicle();
     void despawnVehicle(CVehicle* target);
 
     // metoda do wywołania ruchu pojazdu i

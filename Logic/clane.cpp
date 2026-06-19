@@ -22,7 +22,7 @@ void CLane::addVehicle(CCar* car)
     Vehicles.push_back(car);
 }
 
-bool CLane::spawnVehicle()
+CVehicle* CLane::spawnVehicle()
 {
     // segment losowania:
     static std::random_device rd;
@@ -35,10 +35,10 @@ bool CLane::spawnVehicle()
             addVehicle(new CCar(Direction));
         else
             addVehicle(new CMotor(Direction));
-        return true;
+        return Vehicles[Vehicles.size()-1];
     }
     else
-        return false;
+        return nullptr;
 }
 
 // metoda do wywołania ruchu pojazdu i
@@ -50,7 +50,7 @@ std::vector<CVehicle*> CLane::update(double _time)
         // jeśli pojazd już przejechał przez przejście
         // to po prostu jedzie
         if((*v)->getState() == vehState::harmless)
-        (*v)->move(_time);
+            (*v)->move(_time);
         // jeśli pojazd nie przejechał przez przejście
         // to wywoływana jest inna metoda
         else
@@ -60,7 +60,7 @@ std::vector<CVehicle*> CLane::update(double _time)
                 // pojazd wjechał na przejście
                 Crossing->setVehicle((*v));
                 Crossing->checkFrogState();
-                (*v)->setState(harmless);  // jesli pojazd nie potrącił żaby ustawiamy harmless (bo juz przejechal przez przejscie)
+                (*v)->setState(harmless);  // ustawiamy harmless (bo juz przejechal przez przejscie)
                 Crossing->setVehicle(nullptr);
             }
         }

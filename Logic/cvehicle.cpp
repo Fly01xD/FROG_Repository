@@ -28,7 +28,7 @@ bool CVehicle::move(double _time, int _dist)
 
 void CVehicle::move(double _time)
 {
-    Position = (_time*Speed)+Position;
+    Position = (_time*Speed*0.001)+Position;
 }
 
 // getery settery

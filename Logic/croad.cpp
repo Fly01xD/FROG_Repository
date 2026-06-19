@@ -4,7 +4,7 @@
 #include "CObserver.h"
 
 CRoad::CRoad(gameDifficulty _diff, CObserver* _obs)
-    : Distance(170), State(paused), observer(_obs), logicTimer(QTimer(this))
+    : Distance(100), State(paused), observer(_obs), logicTimer(QTimer(this))
 {
     // ustawianie liczby HP dla poziomów trudnośći
     // (poziom trudności i początkowa liczba HP jest tożsama+1
@@ -57,12 +57,13 @@ void CRoad::updateGame() // rysowanie dla samochodóW
             std::vector<CVehicle*> toDelete = l->update(logicTimer.interval());
             if(!(toDelete.empty()))
                 observer->informSceneDespawned(toDelete);
-            if(l->spawnVehicle())
-                observer->informSceneSpawned(l);
+            CVehicle* newVeh = l->spawnVehicle();
+            if(newVeh)
+                observer->informSceneSpawned(l,newVeh);
         }
         observer->informSceneDraw(Frog->getHP());
 
-        if(Frog->getHP() <= 0) // TUTAJ ZMIENIŁEM Z: Frog->getState() == frogState::dead
+        if(Frog->getState() == frogState::dead)
         {
             gameEnd();
         }

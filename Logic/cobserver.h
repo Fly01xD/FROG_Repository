@@ -22,7 +22,7 @@ public:
     void informScreenPause(); // metoda do informowania CPlay o pazuie
     void informScreenUnPause(); // metoda do informowania CPlay o końcu pauzy
     void informScreenEnd(); // metoda do informowania o śmierci żaby
-    void informSceneSpawned(CLane* _lane); // metoda do mówienia scenie, że pojawił się nowy pojazd
+    void informSceneSpawned(CLane* _lane, CVehicle *_vehicle); // metoda do mówienia scenie, że pojawił się nowy pojazd
     void informSceneDespawned(std::vector<CVehicle *> _target); // podobnie co wyżej ale usuwa
 };
 

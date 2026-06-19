@@ -43,9 +43,9 @@ void CObserver::informScreenEnd()
 
 }
 
-void CObserver::informSceneSpawned(CLane* _lane)
+void CObserver::informSceneSpawned(CLane* _lane, CVehicle* _vehicle)
 {
-    sGame->spawnVehicle(_lane);
+    sGame->spawnVehicle(_lane, _vehicle);
 }
 
 void CObserver::informSceneDespawned(std::vector<CVehicle*> _target)

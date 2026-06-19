@@ -274,7 +274,7 @@ void GameScene::moveGame(int _points)
     update();
 }
 
-void GameScene::spawnVehicle(CLane* _lane)
+void GameScene::spawnVehicle(CLane* _lane, CVehicle* _vehicle)
 {
     LaneItem* target = nullptr;
     for(auto laneI : laneItems)
@@ -284,19 +284,20 @@ void GameScene::spawnVehicle(CLane* _lane)
     }
     if(target)
     {
-        CVehicle* veh = _lane->getVehicles()[_lane->getVehicles().size()-1];
+        // eksperyment
+        // CVehicle* veh = _lane->getVehicles()[_lane->getVehicles().size()-1];
         // qt świruje z tym błędem że veh nigdy nie jest odczytany
         qreal laneW = target->pixmap().width();
-        if(dynamic_cast<CCar*>(veh))
+        if(dynamic_cast<CCar*>(_vehicle))
         {
-            VehicleItem* vehI = new VehicleItem(veh, EVehicleType::Car, target);
-            vehI->setX((veh->getPosition()/200.0)*laneW);
+            VehicleItem* vehI = new VehicleItem(_vehicle, EVehicleType::Car, target);
+            vehI->setX((_vehicle->getPosition()/200.0)*laneW);
             vehicleItems.push_back(vehI); // TO DODAŁEM
         }
-        else if(dynamic_cast<CMotor*>(veh))
+        else if(dynamic_cast<CMotor*>(_vehicle))
         {
-            VehicleItem* vehI = new VehicleItem(veh, EVehicleType::Motorcycle, target);
-            vehI->setX((veh->getPosition()/200.0)*laneW);
+            VehicleItem* vehI = new VehicleItem(_vehicle, EVehicleType::Motorcycle, target);
+            vehI->setX((_vehicle->getPosition()/200.0)*laneW);
             vehicleItems.push_back(vehI); // TO DODAŁEM
         }
     }
